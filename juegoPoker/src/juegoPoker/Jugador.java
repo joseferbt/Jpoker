@@ -38,7 +38,7 @@ public class Jugador extends JPanel {
 		alto=22;
 		
 		setBackground(new Color(0,0,0,50));
-		//setLayout(null);
+		setLayout(null);
 		setPreferredSize(new Dimension(400,150));
 		
 		mano = new ArrayList<Cartas>();
@@ -46,8 +46,9 @@ public class Jugador extends JPanel {
 		panelCartas = new JPanel();
 		panelCartas.setBackground(new Color(0,0,0,0));
 		panelCartas.setPreferredSize(new Dimension(180,140));
+		panelCartas.setBounds(200, 0, 180, 140);
 		//panelCartas.setLayout(null);
-		add(panelCartas,BorderLayout.EAST);
+		add(panelCartas);
 		}
 
 	public Jugador() {
@@ -71,7 +72,7 @@ public class Jugador extends JPanel {
 	
 	public void repartir(Cartas carta) {
 		this.mano.add(carta);
-		carta.setBounds(x, y, 85, 130);
+		carta.setBounds(0, y, 85, 130);
 		panelCartas.add(carta);
 		panelCartas.updateUI();
 		x+=90;

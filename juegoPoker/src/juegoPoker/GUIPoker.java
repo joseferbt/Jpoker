@@ -81,7 +81,7 @@ public class GUIPoker extends JFrame {
 		retiro.addActionListener(escucha);
 		retiro.setBounds(75, 50, 20, 20);
 		panelBotones.add(retiro);
-
+		panelBotones.setBounds(0, 0, 100, 200);
 		//panelBotones.setBounds(0, 0, 200, 150);
 		controlPoker.jugador().add(panelBotones);
 	}

@@ -33,7 +33,7 @@ public class ControlPoker extends JPanel {
 		}
 	
 	public void initgui() {
-		this.setLayout(new BorderLayout());
+		
 		jugadores=2;
 
 		escucha = new Escucha();
