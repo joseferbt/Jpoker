@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.ResourceBundle.Control;
 
 import javax.swing.JPanel;
 
@@ -16,7 +17,7 @@ public class ControlPoker extends JPanel {
 	private Jugador jugador;
 	private Dealer dealer;
 	private MazoDePoker mazo;
-	private int jugadores,apuestas,estado;
+	private int jugadores,apuestas,estado,base,etapa;
 	private PanelCartas panelCartas;
 	private JPanel panel;
 	private Escucha escucha;
@@ -27,9 +28,8 @@ public class ControlPoker extends JPanel {
 		initgui();
 		
 		this.addMouseListener(escucha);
-		
 		this.setPreferredSize(new Dimension(1200,670));
-		this.setBackground(new Color(50,50,50,0));
+		this.setBackground(new Color(50,50,50,90));
 		}
 	
 	public void initgui() {
@@ -86,9 +86,10 @@ public class ControlPoker extends JPanel {
 
 	}
 	
-	public void jugada() {
-
+	public Jugador jugador() {
+		return jugador;
 	}
+	
 	
 	private class Escucha extends MouseAdapter {
 		@Override 
@@ -101,7 +102,6 @@ public class ControlPoker extends JPanel {
 				estado++;
 				
 				met();
-				jugador.turno();
 			}
 			switch (estado) {
 			case 1: 
@@ -114,9 +114,11 @@ public class ControlPoker extends JPanel {
 				break;
 			case 3: 
 				comunitarias.get(4).setIcono();
-				jugada();
 				break;
 				}
 			}
 		}
+	public int getBase() {
+		return base;
+	}
 }

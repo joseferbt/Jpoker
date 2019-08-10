@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class Dealer extends Jugador  {
 
 	public Dealer() {
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(new Color(0,0,0,0));
 		texto = "Dealer";
 	}
 	

@@ -17,17 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-public class Jugador extends JPanel  implements Runnable{
+public class Jugador extends JPanel {
 	
 	protected JPanel panelCartas,panelBotones;
 	public int apostado;
 	protected int dinero, apuesta,x,y,prueba,alto,estado;
 	public boolean turno;
 	protected String texto,nombre;
-	private JButton verCartas,ir,pasar,subir,retiro;
-	private SpinnerNumberModel modelo;
-	private JSpinner cuadro;
-	private Escucha escucha;
+
 	protected ArrayList<Cartas> mano;
 	
 	public Jugador(String nombre,boolean turno) {
@@ -40,80 +37,25 @@ public class Jugador extends JPanel  implements Runnable{
 		x=200;y=10;
 		alto=22;
 		
-		setBackground(Color.LIGHT_GRAY);
-		setLayout(null);
+		setBackground(new Color(0,0,0,50));
+		//setLayout(null);
 		setPreferredSize(new Dimension(400,150));
 		
 		mano = new ArrayList<Cartas>();
-		escucha = new Escucha();
-		
+
 		panelCartas = new JPanel();
 		panelCartas.setBackground(new Color(0,0,0,0));
-		panelCartas.setPreferredSize(new Dimension(250,140));
-		panelCartas.setLayout(null);
-		
-		panelBotones = new JPanel();
-		panelBotones.setBackground(new Color(0,0,0,0));
-		panelBotones.setPreferredSize(new Dimension(250,140));
-		panelBotones.setLayout(null);
-		
-		verCartas=new JButton("ver");
-		verCartas.addMouseListener(escucha);
-		verCartas.setBounds(10,35,52,alto);
-		//verCartas.setVisible(false);
-		panelBotones.add(verCartas);
-		
-		ir = new JButton("ir");
-		ir.setBounds(10, 70, 42,alto);
-		ir.addActionListener(escucha);
-		//ir.setVisible(false);
-		panelBotones.add(ir);
-		
-		subir = new JButton("subir");
-		subir.addActionListener(escucha);
-		subir.setBounds(10,105,65,alto);
-		//subir.setVisible(false);
-		panelBotones.add(subir);
-		
-		modelo = new SpinnerNumberModel(apuesta,apuesta,dinero,apuesta);
-	
-		cuadro = new JSpinner(modelo);
-		cuadro.setBounds(80,104,50,alto);
-		//cuadro.setVisible(false);
-		panelBotones.add(cuadro);
-		
-		pasar = new JButton(new ImageIcon("src/recursos/pasar.jpg"));
-		pasar.setBorderPainted(false);
-		pasar.addActionListener(escucha);
-		pasar.setBounds(75, 35,30, 10);
-		//pasar.setVisible(false);
-		panelBotones.add(pasar);
-		
-		retiro = new JButton("R");
-		retiro.addActionListener(escucha);
-		retiro.setBounds(75, 50, 20, 20);
-		panelBotones.add(retiro);
-		
-		panelBotones.setBounds(0, 0, x, 150);
-		panelCartas.add(panelBotones);
-		
-		panelCartas.setBounds(10, 0, 400, 150);
+		panelCartas.setPreferredSize(new Dimension(180,140));
+		//panelCartas.setLayout(null);
 		add(panelCartas,BorderLayout.EAST);
-		if(!turno) {
-			this.verCartas.setVisible(false);
-			ir.setVisible(false);
-			subir.setVisible(false);
-			retiro.setVisible(false);
-			pasar.setVisible(false);
-			cuadro.setVisible(false);
 		}
-	}
+
 	public Jugador() {
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(400,150));
 		mano = new ArrayList<Cartas>();
 		panelCartas = new JPanel();
-		panelCartas.setBackground(new Color(50,0,0,0));
+		panelCartas.setBackground(new Color(0,0,0,0));
 		panelCartas.setPreferredSize(new Dimension(180,140));
 		add(panelCartas,BorderLayout.EAST);
 	}
@@ -123,7 +65,7 @@ public class Jugador extends JPanel  implements Runnable{
 	}
 	
 	
-	public void asd() {
+	public void imprimir() {
 		repaint();
 	}
 	
@@ -149,69 +91,15 @@ public class Jugador extends JPanel  implements Runnable{
 	public void anadir(int i) {
 		add(mano.get(i));
 	}
-	
-	public void turno() {
-		turno=true;
-		if(!turno) {
-			this.verCartas.setVisible(true);
-			ir.setVisible(true);
-			subir.setVisible(true);
-			retiro.setVisible(true);
-			pasar.setVisible(true);
-			cuadro.setVisible(true);
-			}
-		}
+
 	public int getEstado() {
 		return estado;
 	}
 	
-	private class Escucha extends MouseAdapter implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			if(turno) {
-				
-				if(e.getSource()== ir) {
-					prueba=1;
-					if(apuesta<= dinero) {
-						dinero -= apuesta;
-						apostado+=apuesta;
-						repaint();
-						estado = 0;
-						}
-					}
-				if (e.getSource()== subir) {
-					dinero -= Integer.valueOf(cuadro.getModel().getValue().toString())+apuesta;
-					apostado+=apuesta+Integer.valueOf(cuadro.getModel().getValue().toString());
-					estado = 0;
-					repaint();
-				}
-				if(e.getSource() == pasar) {
-					estado = 1;
-				}
-				if(e.getSource()==retiro) {
-					estado = 2;
-				}
-					turno=false;
-			}
-		}
-		@Override 
-		public  void mouseEntered(MouseEvent evento) {
-				mano.get(0).setIcono();
-				mano.get(1).setIcono();
-		}
-		public  void mouseExited(MouseEvent evento) {
-			mano.get(0).setIcon(mano.get(0).defoutl);
-			mano.get(1).setIcon(mano.get(0).defoutl);
-		}
-		
-		}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
+	public int getDinero() {
+		return dinero;
 	}
 	
+	
+		
 }
