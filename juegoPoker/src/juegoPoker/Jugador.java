@@ -88,10 +88,6 @@ public class Jugador extends JPanel {
 			g.drawString(texto, 10, 20);
 		}
 	}
-	
-	public void anadir(int i) {
-		add(mano.get(i));
-	}
 
 	public int getEstado() {
 		return estado;
@@ -100,7 +96,15 @@ public class Jugador extends JPanel {
 	public int getDinero() {
 		return dinero;
 	}
-	
-	
+	public ArrayList<Cartas> getMano() {
+		return mano;
+	}
+	public void setApuesta(int valor ) {
+		 dinero -= valor;
+		 repaint();
+	}
+	public void setTurno(boolean valor) {
+		turno=valor;
+	}
 		
 }

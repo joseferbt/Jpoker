@@ -81,8 +81,7 @@ public class GUIPoker extends JFrame {
 		retiro.addActionListener(escucha);
 		retiro.setBounds(75, 50, 20, 20);
 		panelBotones.add(retiro);
-		panelBotones.setBounds(0, 0, 100, 200);
-		//panelBotones.setBounds(0, 0, 200, 150);
+		panelBotones.setBounds(0, 0, 200, 150);
 		controlPoker.jugador().add(panelBotones);
 	}
 
@@ -91,44 +90,47 @@ public class GUIPoker extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-		/*	if (juega) {
+		if (controlPoker.jugador().turno) {
 
 				if (e.getSource() == ir) {
-					if (controlPoker.getBase() <= dinero) {
-						dinero -= controlPoker.getBase();
-						apostado += controlPoker.getBase();
+					if (controlPoker.getBase() <= controlPoker.jugador().getDinero()) {
+						controlPoker.jugador().setApuesta(controlPoker.getBase());
+						controlPoker.jugador().apostado =controlPoker.getBase();
+						controlPoker.setApuestas(controlPoker.getBase());
 						repaint();
-						estado = 0;
+						controlPoker.jugador().estado = 0;
 					}
 				}
 				if (e.getSource() == subir) {
-					dinero -= Integer.valueOf(cuadro.getModel().getValue().toString()) + controlPoker.getBase();
-					apostado += controlPoker.getBase() + Integer.valueOf(cuadro.getModel().getValue().toString());
-					estado = 0;
+					controlPoker.jugador().setApuesta(Integer.valueOf(cuadro.getModel().getValue().toString()) + controlPoker.getBase());
+					controlPoker.jugador().apostado =Integer.valueOf(cuadro.getModel().getValue().toString()) + controlPoker.getBase();
+					controlPoker.setApuestas(controlPoker.getBase() + Integer.valueOf(cuadro.getModel().getValue().toString()));
+					controlPoker.jugador().estado = 0;
 					repaint();
 				}
 				if (e.getSource() == pasar) {
-					estado = 1;
+					controlPoker.jugador().estado = 1;
 				}
 				if (e.getSource() == retiro) {
-					estado = 2;
+					controlPoker.jugador().estado = 2;
 				}
-				turno = false;
-			}*/
+				//controlPoker.jugador().turno = false;
+				}
+			controlPoker.etapaJuego();
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent evento) {
-			/*
-			mano.get(0).setIcono();
-			mano.get(1).setIcono();
+			
+			controlPoker.jugador().getMano().get(0).setIcono();
+			controlPoker.jugador().getMano().get(1).setIcono();
+			
 		}
 
 		public void mouseExited(MouseEvent evento) {
-			mano.get(0).setIcon(mano.get(0).defoutl);
-			mano.get(1).setIcon(mano.get(0).defoutl);
+			controlPoker.jugador().getMano().get(0).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
+			controlPoker.jugador().getMano().get(1).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
 		}
-*/
-	}
+
 	}
 }
