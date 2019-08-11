@@ -155,11 +155,15 @@ public class ControlPoker extends JPanel {
 		apuestas += apuesta * 2;
 	}
 	
+	public int cuantosPalos(String[] array) {
+		return 0;
+	}
+	
 	public void EscaleraReal(Jugador jugador) {
 		for(int i =0;i<jugador.mano.size();i++) {
-			if (i==5) {
-				
-			}
+		if(true) {
+			
+		}
 		}
 	}
 	
