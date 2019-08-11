@@ -103,8 +103,6 @@ public class ControlPoker extends JPanel {
 		}
 
 	public void etapaJuego() {
-		int aux = apuestas;
-		//apuestas = jugador.apostado;
 
 		if ( jugador.getEstado() == 1||jugador.getEstado() == 0) {
 			panelCartas.actualizar( apuestas);

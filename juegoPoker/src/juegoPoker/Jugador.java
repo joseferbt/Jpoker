@@ -37,7 +37,7 @@ public class Jugador extends JPanel {
 		x=200;y=10;
 		alto=22;
 		
-		setBackground(new Color(0,0,0,50));
+		setBackground(new Color(0,0,0,0));
 		setLayout(null);
 		setPreferredSize(new Dimension(400,150));
 		
