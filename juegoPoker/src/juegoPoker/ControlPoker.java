@@ -1,9 +1,12 @@
 package juegoPoker;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-
+import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -13,135 +16,170 @@ public class ControlPoker extends JPanel {
 	private Jugador jugador;
 	private Dealer dealer;
 	private MazoDePoker mazo;
-	private int jugadores, apuestas, estado, base;
+	private int jugadores,apuestas,estado,analizarJ,analizarP;
 	private PanelCartas panelCartas;
 	private JPanel panel;
-
+	private Escucha escucha;
 	private ArrayList<Cartas> comunitarias;
+	private ArrayList<Cartas> jugadaJugador;
+	private ArrayList<Cartas> jugadaPc;
+
 
 	public ControlPoker() {
 		initgui();
 
-		this.setPreferredSize(new Dimension(1200, 670));
-		this.setBackground(new Color(50, 50, 50, 90));
-	}
+		this.addMouseListener(escucha);
+
+		jugadaJugador = new ArrayList();
+		jugadaPc = new ArrayList();
+
+		this.setPreferredSize(new Dimension(1200,670));
+		this.setBackground(new Color(50,50,50,0));
+		llenarComparacionJ();
+		llenarComparacionP();
+		pareja(jugadaJugador);
+}
 
 	public void initgui() {
+			this.setLayout(new BorderLayout());
+			jugadores=2;
 
-		base = 25;
+			escucha = new Escucha();
 
-		jugadores = 2;
+			comunitarias = new ArrayList<>();
 
-		comunitarias = new ArrayList<>();
+			dealer = new Dealer();
+			add(dealer,BorderLayout.NORTH);
+			
+			panelCartas= new PanelCartas();
+			
+			panel = new JPanel();
+			panel.setBackground(new Color(0,0,0,0));
+			panelCartas.add(panel);
+			
+			add(panelCartas,BorderLayout.CENTER); 
+			
+			jugador = new Jugador("jugador1",true);
+			add(jugador,BorderLayout.SOUTH);
+			
+			mazo = new MazoDePoker();
+			
+			reparto();
 
-		dealer = new Dealer();
-		add(dealer, BorderLayout.NORTH);
+}
 
-		panelCartas = new PanelCartas();
 
-		panel = new JPanel();
-		panel.setBackground(new Color(0, 0, 0, 0));
-		panelCartas.add(panel);
+	public void llenarComparacionJ(){
+		
+			
+			this.jugadaJugador.add(comunitarias.get(0));
+			this.jugadaJugador.add(comunitarias.get(1));
+			this.jugadaJugador.add(comunitarias.get(2));
+			this.jugadaJugador.add(comunitarias.get(3));
+			this.jugadaJugador.add(comunitarias.get(4));
+			this.jugadaJugador.add(jugador.getMano().get(0));
+			this.jugadaJugador.add(jugador.getMano().get(1));
+			
+			
+		}
 
-		add(panelCartas, BorderLayout.CENTER);
 
-		jugador = new Jugador("jugador1", true);
-		add(jugador, BorderLayout.SOUTH);
 
-		mazo = new MazoDePoker();
+	public void llenarComparacionP(){
+	
+		this.jugadaPc.add(comunitarias.get(0));
+		this.jugadaPc.add(comunitarias.get(1));
+		this.jugadaPc.add(comunitarias.get(2));
+		this.jugadaPc.add(comunitarias.get(3));
+		this.jugadaPc.add(comunitarias.get(4));
+		this.jugadaPc.add(dealer.getMano().get(0));
+		this.jugadaPc.add(dealer.getMano().get(1));
+ }
 
-		reparto();
+	public void pareja(ArrayList<Cartas> array){
+		for(int i = 0; i<(array.size()); i++){
+			for(int j = 0; j<array.size();j++){
+				if(array.get(i).getId()  == array.get(j).getId()){
+					analizarP = 2;
 
 	}
+			}
+		}
+		System.out.println(analizarP);
 
+	}
+/*
+	public void triple(ArrayList<Cartas> array) {
+		for(int i = 0; i<(array.size()); i++){
+			for(int j = 0; j<array.size();j++){
+				for(int k = 0; k<array.size();k++) {
+					if(array.get(i) == array.get(j) == array.get(k)) {
+						
+					}
+				}
+
+	}
+		}
+	}
+*/	
 	public void reparto() {
-		for (int i = 0; i < jugadores; i++) {
+		for(int i=0;i<jugadores;i++) {
 			Cartas aux = mazo.getMazo().get(0);
 			jugador.repartir(aux);
 			mazo.getMazo().remove(0);
 			aux = mazo.getMazo().get(0);
 			dealer.repartir(aux);
 			mazo.getMazo().remove(0);
-		}
+	}
 
-		for (int i = 0; i < 5; i++) {
+		for(int i=0;i<5;i++) {
 			Cartas aux = mazo.getMazo().get(0);
-			aux.setVisible(false);
 			comunitarias.add(aux);
 			panel.add(aux);
 			mazo.getMazo().remove(aux);
 		}
-		estado = 0;
+		
+		estado=0;
 
-	}
+}
 
 	public void met() {
 		updateUI();
 		panelCartas.updateUI();
+	}
+
+	public void jugada() {
 
 	}
 
-	public Jugador jugador() {
-		return jugador;
-	}
-	
-	public void jugada(int entrada,int aux) {
-		switch(entrada) {
-			case 0:	
-				if(base<=jugador.getDinero()) {
-					jugador.setApuesta(base);
-					setApuestas(base);
-					jugador.estado = 0;
-					}break;
-			case 1:
-					jugador.setApuesta(aux + base);
-					setApuestas(base + aux);
-					if(jugador.getDinero()==0) {
-						jugador.estado = 4;
-					}else {jugador.estado =0;}
-					}
-		}
+		private class Escucha extends MouseAdapter {
+			@Override 
+		public  void mouseEntered(MouseEvent evento) {
+				int aux=apuestas;
+				apuestas=jugador.apostado;
 
-	public void etapaJuego() {
+				if (aux!=apuestas&& jugador.getEstado()!=2) {
+					panelCartas.actualizar(2*apuestas);
+					estado++;
 
-		if ( jugador.getEstado() == 1||jugador.getEstado() == 0) {
-			panelCartas.actualizar( apuestas);
-			estado++;
-			met();
-		}else if(jugador.estado==4) {
-			estado=4;
-		}
-		
-		
+					met();
+					jugador.turno();
+				}
+				
 		switch (estado) {
-		case 1:
-			for(int i = 0; i<3;i++ ) {
-				comunitarias.get(i).setIcono();
-				comunitarias.get(i).setVisible(true);
-			}
+			case 1: 
+			comunitarias.get(0).setIcono();
+			comunitarias.get(1).setIcono();
+			comunitarias.get(2).setIcono();
 			break;
-		case 2:
-			comunitarias.get(3).setVisible(true);
+			case 2:
 			comunitarias.get(3).setIcono();
 			break;
-		
-		case 4 : case 3:
-			for(int i = 0; i<5;i++ ) {
-				comunitarias.get(i).setIcono();
-				comunitarias.get(i).setVisible(true);
-			}
-			dealer.mano.get(0).setIcono();
-			dealer.mano.get(1).setIcono();
+			case 3: 
+			comunitarias.get(4).setIcono();
 			break;
-		}
+			}
+			}
+		}	
 	}
 
-	public int getBase() {
-		return base;
-	}
-
-	public void setApuestas(int apuesta) {
-		apuestas += apuesta * 2;
-	}
-	
-}
