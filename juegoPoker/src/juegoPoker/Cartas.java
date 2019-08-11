@@ -34,10 +34,10 @@ public class Cartas extends JLabel {
 
 		
 	
-		return valor;
+		return palo;
 	}
 	public int getId() {
-		return valor.indexOf(0);
+		return idCarta;
 	}
 	public ImageIcon getImagen() {
 		return imagen;

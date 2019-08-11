@@ -124,7 +124,6 @@ public class Jugador extends JPanel {
 				arrayPalo[i]= arrayValor[i].substring(1);
 			}
 		}
-		
 	}
 	public int[] getArrayId() {
 		return arrayId;

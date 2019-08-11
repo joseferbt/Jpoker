@@ -81,8 +81,9 @@ public class ControlPoker extends JPanel {
 		System.out.println(Arrays.toString(jugador.getArrayId()));
 		System.out.println(Arrays.toString(jugador.getArrayPalo()));
 		System.out.println(Arrays.toString(dealer.getArrayValor()));
-		System.out.println(Arrays.toString(jugador.getArrayId()));
-		System.out.println(Arrays.toString(jugador.getArrayPalo()));
+		System.out.println(Arrays.toString(dealer.getArrayId()));
+		System.out.println(Arrays.toString(dealer.getArrayPalo()));
+		System.out.println(Arrays.toString(cuantosPalos(dealer.getArrayPalo())));
 		//System.out.println(Arrays.toString(jugador.getArrayPalo()));
 	}
 
@@ -155,8 +156,19 @@ public class ControlPoker extends JPanel {
 		apuestas += apuesta * 2;
 	}
 	
-	public int cuantosPalos(String[] array) {
-		return 0;
+	public int[][] cuantosPalos(String[] array) {
+		int[][] aux= {{0,0,0,0},{0,0,0,0}};
+		String[] palos= {"C","D","P","T"};
+		for(int i=0;i<palos.length;i++) {
+			for(int j=0;j<array.length;j++) {
+				if(palos[i].equals(array[j])){
+					aux[0][i]+=1;
+					}
+				}
+			}
+		System.out.println("aqui"+Arrays.toString(array));
+		System.out.println("aqui"+Arrays.toString(aux));
+		return aux;
 	}
 	
 	public void EscaleraReal(Jugador jugador) {
