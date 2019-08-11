@@ -15,13 +15,5 @@ public class Dealer extends Jugador  {
 		texto = "Dealer";
 	}
 	
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		g.setColor(Color.black);
-		g.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
-		g.drawString(texto, 10, 20);		
-	}
-	
+
 }

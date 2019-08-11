@@ -16,16 +16,18 @@ public class ControlPoker extends JPanel {
 	private int jugadores, apuestas, estado, base;
 	private PanelCartas panelCartas;
 	private JPanel panel;
-
 	private ArrayList<Cartas> comunitarias;
+	
+
 
 	public ControlPoker() {
 		initgui();
 
 		this.setPreferredSize(new Dimension(1200, 670));
-		this.setBackground(new Color(50, 50, 50, 90));
+		this.setBackground(new Color(50, 50, 50, 0));
+	
 	}
-
+	
 	public void initgui() {
 
 		base = 25;
@@ -63,7 +65,6 @@ public class ControlPoker extends JPanel {
 			dealer.repartir(aux);
 			mazo.getMazo().remove(0);
 		}
-
 		for (int i = 0; i < 5; i++) {
 			Cartas aux = mazo.getMazo().get(0);
 			aux.setVisible(false);
@@ -142,6 +143,10 @@ public class ControlPoker extends JPanel {
 
 	public void setApuestas(int apuesta) {
 		apuestas += apuesta * 2;
+	}
+	
+	public void EscaleraReal(Jugador jugador) {
+		
 	}
 	
 }
