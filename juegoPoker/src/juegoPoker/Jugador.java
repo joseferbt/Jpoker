@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,13 +22,17 @@ public class Jugador extends JPanel {
 	
 	protected JPanel panelCartas,panelBotones;
 	
-	protected int dinero, apuesta,x,y,prueba,alto,estado;
+	protected int dinero, apuesta,x,y,puntos,alto,estado;
 	public boolean turno;
 	protected String texto,nombre;
-
+	protected int[] arrayId;
+	private String[] arrayPalo,arrayValor;
 	protected ArrayList<Cartas> mano;
 	
 	public Jugador(String nombre,boolean turno) {
+		arrayId=new int[7];
+		arrayPalo=new String[7];
+		arrayValor=new String[7];
 		dinero=1000;
 		apuesta=0;// borrar
 		this.turno= turno;
@@ -52,6 +57,9 @@ public class Jugador extends JPanel {
 		}
 
 	public Jugador() {
+		arrayId=new int[7];
+		arrayPalo=new String[7];
+		arrayValor=new String[7];
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(400,150));
 		mano = new ArrayList<Cartas>();
@@ -71,6 +79,7 @@ public class Jugador extends JPanel {
 		panelCartas.add(carta);
 		panelCartas.updateUI();
 		x+=90;
+		
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -101,5 +110,29 @@ public class Jugador extends JPanel {
 	public void setTurno(boolean valor) {
 		turno=valor;
 	}
+	public void setArray() {
+		for(int i=0;i<mano.size();i++) {
+			arrayValor[i] = mano.get(i).getValor();
+		}
+		Arrays.sort(arrayValor);
+		for(int i=0;i<7;i++) {
+			if(arrayValor[i].length()>2) {
+			arrayId[i]= Integer.valueOf(arrayValor[i].substring(0,2));
+			arrayPalo[i]= arrayValor[i].substring(2);
+			}else {
+				arrayId[i]= Integer.valueOf(arrayValor[i].substring(0,1));
+				arrayPalo[i]= arrayValor[i].substring(1);
+			}
+		}
 		
+	}
+	public int[] getArrayId() {
+		return arrayId;
+	}
+	public String[] getArrayPalo() {
+		return arrayPalo;
+	}
+	public String[] getArrayValor() {
+		return arrayValor;
+	}
 }

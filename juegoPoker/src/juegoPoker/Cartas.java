@@ -8,24 +8,26 @@ import javax.swing.JLabel;
 public class Cartas extends JLabel {
 	public final ImageIcon defoutl= new ImageIcon("src/recursos/reverso.png"); 
 	private ImageIcon imagen;
-	private int idCarta;
-	private String palo;
+
+	private String valor;
 	
 	// palo toma valores de S(),C(),H(),D(diamond)
-	public Cartas(int idCarta, String palo) {
-		this.idCarta = idCarta;
-		this.palo = palo;
-		this.imagen = new ImageIcon("src/recursos/"+idCarta+palo+".png");
+	public Cartas( String valor) {
+		
+		this.valor = valor;
+		this.imagen = new ImageIcon("src/recursos/"+valor+".png");
 		this.setIcon(defoutl);
 	}
  
 	
-	public String getPalo() {
-		return palo;
+	public String getValor() {
+		return valor;
 	}
-	
+	public String getPalo() {
+		return valor;
+	}
 	public int getId() {
-		return idCarta;
+		return valor.indexOf(0);
 	}
 	public ImageIcon getImagen() {
 		return imagen;

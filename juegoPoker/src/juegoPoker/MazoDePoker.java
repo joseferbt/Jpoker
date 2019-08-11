@@ -20,7 +20,7 @@ public class MazoDePoker {
 		for(int i=2;i<=14;i++) {
 			for(int j=0;j<4;j++) {
 				
-				baraja.add(new Cartas(i,palos[j]));
+				baraja.add(new Cartas(i+palos[j]));
 			}
 		} 
 		revolver();

@@ -59,7 +59,7 @@ public void llenarComparacionP(){
 public void parejaJugador(){
 
 		if(jugador.getMano().get(0).getId() == jugador.getMano().get(1).getId()) {
-			cartaComprobacion = new Cartas(jugador.getMano().get(0).getId(),jugador.getMano().get(0).getPalo());
+			cartaComprobacion = new Cartas(jugador.getMano().get(0).getId()+jugador.getMano().get(0).getPalo());
 			jugadaJ.remove(0);
 			jugadaJ.remove(1);
 			analizarP = 2;
