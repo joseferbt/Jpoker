@@ -20,7 +20,7 @@ import javax.swing.SpinnerNumberModel;
 public class Jugador extends JPanel {
 	
 	protected JPanel panelCartas,panelBotones;
-	public int apostado;
+	
 	protected int dinero, apuesta,x,y,prueba,alto,estado;
 	public boolean turno;
 	protected String texto,nombre;
@@ -29,11 +29,11 @@ public class Jugador extends JPanel {
 	
 	public Jugador(String nombre,boolean turno) {
 		dinero=1000;
-		apuesta=10;// borrar
+		apuesta=0;// borrar
 		this.turno= turno;
 		this.nombre = nombre;
 		texto= nombre+" Dinero : ";
-		apostado=0;
+		
 		x=200;y=10;
 		alto=22;
 		
@@ -60,11 +60,6 @@ public class Jugador extends JPanel {
 		panelCartas.setPreferredSize(new Dimension(180,140));
 		add(panelCartas,BorderLayout.EAST);
 	}
-	
-	public void apuesta(int apostar) {
-		apuesta=apostar;
-	}
-	
 	
 	public void imprimir() {
 		repaint();
@@ -99,10 +94,10 @@ public class Jugador extends JPanel {
 	public ArrayList<Cartas> getMano() {
 		return mano;
 	}
-	public void setApuesta(int valor ) {
+	public void setApuesta(int valor) {
 		 dinero -= valor;
 		 repaint();
-	}
+		 }
 	public void setTurno(boolean valor) {
 		turno=valor;
 	}

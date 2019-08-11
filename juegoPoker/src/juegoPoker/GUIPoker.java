@@ -63,8 +63,7 @@ public class GUIPoker extends JFrame {
 		// subir.setVisible(false);
 		panelBotones.add(subir);
 
-		modelo = new SpinnerNumberModel(controlPoker.getBase(), controlPoker.getBase(), controlPoker.jugador().getDinero(), controlPoker.getBase());
-
+		modelo = new SpinnerNumberModel(controlPoker.getBase(), controlPoker.getBase(), controlPoker.jugador().getDinero()-controlPoker.getBase(), controlPoker.getBase());
 		cuadro = new JSpinner(modelo);
 		cuadro.setBounds(80, 104, 50, alto);
 		// cuadro.setVisible(false);
@@ -93,19 +92,14 @@ public class GUIPoker extends JFrame {
 		if (controlPoker.jugador().turno) {
 
 				if (e.getSource() == ir) {
-					if (controlPoker.getBase() <= controlPoker.jugador().getDinero()) {
-						controlPoker.jugador().setApuesta(controlPoker.getBase());
-						controlPoker.jugador().apostado =controlPoker.getBase();
-						controlPoker.setApuestas(controlPoker.getBase());
-						repaint();
-						controlPoker.jugador().estado = 0;
+					controlPoker.jugada(0,0);
+					modelo.setMaximum(controlPoker.jugador().getDinero()-controlPoker.getBase());
+					repaint();
 					}
-				}
+				
 				if (e.getSource() == subir) {
-					controlPoker.jugador().setApuesta(Integer.valueOf(cuadro.getModel().getValue().toString()) + controlPoker.getBase());
-					controlPoker.jugador().apostado =Integer.valueOf(cuadro.getModel().getValue().toString()) + controlPoker.getBase();
-					controlPoker.setApuestas(controlPoker.getBase() + Integer.valueOf(cuadro.getModel().getValue().toString()));
-					controlPoker.jugador().estado = 0;
+					controlPoker.jugada(1, Integer.valueOf(cuadro.getModel().getValue().toString()));
+					modelo.setMaximum(controlPoker.jugador().getDinero()-controlPoker.getBase());
 					repaint();
 				}
 				if (e.getSource() == pasar) {
