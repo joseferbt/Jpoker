@@ -69,16 +69,16 @@ public class GUIPoker extends JFrame {
 		// cuadro.setVisible(false);
 		panelBotones.add(cuadro);
 
-		pasar = new JButton(new ImageIcon("src/recursos/pasar.jpg"));
+		pasar = new JButton("Pasar");
 		pasar.setBorderPainted(false);
 		pasar.addActionListener(escucha);
-		pasar.setBounds(75, 35, 30, 10);
+		pasar.setBounds(75, 35, 70, alto);
 		// pasar.setVisible(false);
 		panelBotones.add(pasar);
 
-		retiro = new JButton("R");
+		retiro = new JButton("Retiro");
 		retiro.addActionListener(escucha);
-		retiro.setBounds(75, 50, 20, 20);
+		retiro.setBounds(75, 70, 70, 20);
 		panelBotones.add(retiro);
 		panelBotones.setBounds(0, 0, 200, 150);
 		controlPoker.jugador().add(panelBotones);
@@ -104,6 +104,7 @@ public class GUIPoker extends JFrame {
 				}
 				if (e.getSource() == pasar) {
 					controlPoker.jugador().estado = 1;
+					repaint();
 				}
 				if (e.getSource() == retiro) {
 					controlPoker.jugador().estado = 2;

@@ -124,16 +124,14 @@ public class ControlPoker extends JPanel {
 			comunitarias.get(3).setVisible(true);
 			comunitarias.get(3).setIcono();
 			break;
-		case 3:
-			comunitarias.get(4).setVisible(true);
-			comunitarias.get(4).setIcono();
-			break;
 		
-		case 4:
+		case 4 : case 3:
 			for(int i = 0; i<5;i++ ) {
 				comunitarias.get(i).setIcono();
 				comunitarias.get(i).setVisible(true);
 			}
+			dealer.mano.get(0).setIcono();
+			dealer.mano.get(1).setIcono();
 			break;
 		}
 	}
