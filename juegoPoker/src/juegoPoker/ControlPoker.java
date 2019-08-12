@@ -13,12 +13,13 @@ public class ControlPoker extends JPanel {
 	private Jugador jugador;
 	private Dealer dealer;
 	private MazoDePoker mazo;
-	private int jugadores, apuestas, estado, base;
+	private int apuestas, estado, base;
 	private PanelCartas panelCartas;
 	private JPanel panel;
 	private ArrayList<Cartas> comunitarias;
-	
-
+	private int[] nPalos= {0,0,0,0};
+	private int[][] posiciones= new int[4][7];
+	private ArrayList<Jugador> jugadores;
 
 	public ControlPoker() {
 		initgui();
@@ -29,10 +30,10 @@ public class ControlPoker extends JPanel {
 	}
 	
 	public void initgui() {
-
+		
 		base = 25;
 
-		jugadores = 2;
+		jugadores = new ArrayList<>();
 
 		comunitarias = new ArrayList<>();
 
@@ -51,13 +52,14 @@ public class ControlPoker extends JPanel {
 		add(jugador, BorderLayout.SOUTH);
 
 		mazo = new MazoDePoker();
-
+		jugadores.add(jugador);
+		jugadores.add(dealer);
 		reparto();
-
+	
 	}
 
 	public void reparto() {
-		for (int i = 0; i < jugadores; i++) {
+		for (int i = 0; i < jugadores.size(); i++) {
 			Cartas aux = mazo.getMazo().get(0);
 			jugador.repartir(aux);
 			mazo.getMazo().remove(0);
@@ -77,9 +79,11 @@ public class ControlPoker extends JPanel {
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
+		System.out.println("Jugador");
 		System.out.println(Arrays.toString(jugador.getArrayValor()));
 		System.out.println(Arrays.toString(jugador.getArrayId()));
 		System.out.println(Arrays.toString(jugador.getArrayPalo()));
+		System.out.println("Dealer");
 		System.out.println(Arrays.toString(dealer.getArrayValor()));
 		System.out.println(Arrays.toString(dealer.getArrayId()));
 		System.out.println(Arrays.toString(dealer.getArrayPalo()));
@@ -156,26 +160,62 @@ public class ControlPoker extends JPanel {
 		apuestas += apuesta * 2;
 	}
 	
-	public int[][] cuantosPalos(String[] array) {
-		int[][] aux= {{0,0,0,0},{0,0,0,0}};
+	public int[] cuantosPalos(String[] array) {
+
+		
 		String[] palos= {"C","D","P","T"};
+		
 		for(int i=0;i<palos.length;i++) {
+			int k=0;
 			for(int j=0;j<array.length;j++) {
 				if(palos[i].equals(array[j])){
-					aux[0][i]+=1;
+					nPalos[i]+=1;
+					posiciones[i][k]=j+1;
+					k++;
 					}
+				
 				}
 			}
+		for(int i=0;i<4;i++) {
+			System.out.println(Arrays.toString(posiciones[i]));
+		}
+			
 		System.out.println("aqui"+Arrays.toString(array));
-		System.out.println("aqui"+Arrays.toString(aux));
-		return aux;
+		System.out.println("aqui"+Arrays.toString(nPalos));
+		System.out.println("aqui"+Arrays.toString(cuantosHay(nPalos)));
+		return cuantosHay(nPalos);
 	}
 	
-	public void EscaleraReal(Jugador jugador) {
-		for(int i =0;i<jugador.mano.size();i++) {
-		if(true) {
-			
+	public int[] cuantosHay(int[] cuantosPalos) {
+		int[] hay= {0,0};
+		int aux=cuantosPalos[0];
+		for(int i=0;i<cuantosPalos.length;i++) {
+			if(aux<cuantosPalos[i]) {
+				 hay[0]=cuantosPalos[i];
+				 hay[1]=i;
+				 aux=hay[0];
+			}else {hay[0]=aux;}
 		}
+		return hay;
+	}
+	
+	public boolean escaleraP(int posicion) {
+		int aux=0;
+		for(int i=0;i<posiciones[posicion].length;i++) {
+			if(posiciones[posicion][i]!=0) {
+				aux++;
+			}else if(posiciones[posicion][i]==0&&aux<5) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void escaleraReal(Jugador jugador) {
+		for(int i =0;i<jugador.mano.size();i++) {
+			if(escaleraP(cuantosPalos(jugador.getArrayPalo())[1])) {
+				
+			}
 		}
 	}
 	
