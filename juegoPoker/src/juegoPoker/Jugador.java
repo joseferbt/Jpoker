@@ -28,11 +28,12 @@ public class Jugador extends JPanel {
 	protected int[] arrayId;
 	private String[] arrayPalo,arrayValor;
 	protected ArrayList<Cartas> mano;
-	
+	private ArrayList<String> jugadas;
 	public Jugador(String nombre,boolean turno) {
 		arrayId=new int[7];
 		arrayPalo=new String[7];
 		arrayValor=new String[7];
+		jugadas=new ArrayList<>();
 		dinero=1000;
 		apuesta=0;// borrar
 		this.turno= turno;
@@ -60,6 +61,7 @@ public class Jugador extends JPanel {
 		arrayId=new int[7];
 		arrayPalo=new String[7];
 		arrayValor=new String[7];
+		jugadas=new ArrayList<>();
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(400,150));
 		mano = new ArrayList<Cartas>();
@@ -133,5 +135,11 @@ public class Jugador extends JPanel {
 	}
 	public String[] getArrayValor() {
 		return arrayValor;
+	}
+	public ArrayList<String> getArrayJugadas() {
+		return jugadas;
+	}
+	public void setArraycartas(ArrayList<Cartas> cartas) {
+		mano = cartas;
 	}
 }

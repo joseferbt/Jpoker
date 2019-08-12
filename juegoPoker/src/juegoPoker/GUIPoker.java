@@ -29,7 +29,7 @@ public class GUIPoker extends JFrame {
 
 		// configuracion Default Windows
 		 setSize(1200,700);
-		setLocationRelativeTo(null);
+		this.setLocation(1500, 0);
 		setVisible(true);
 		setResizable(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
