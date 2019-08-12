@@ -108,6 +108,7 @@ public class Jugador extends JPanel {
 	public void setApuesta(int valor) {
 		 dinero -= valor;
 		 repaint();
+		
 		 }
 	public void setTurno(boolean valor) {
 		turno=valor;

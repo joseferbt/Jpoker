@@ -21,7 +21,6 @@ public class ControlPoker extends JPanel {
 	private int[][] posiciones = new int[4][7];
 	private int[] hay = new int[2];
 	private int[] grupos = new int[14];
-	
 	private ArrayList<Jugador> jugadores;
 
 	public ControlPoker() {
