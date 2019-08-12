@@ -212,10 +212,15 @@ public class ControlPoker extends JPanel {
 	}
 	
 	public void escaleraReal(Jugador jugador) {
+		int aux=10;
 		for(int i =0;i<jugador.mano.size();i++) {
-			if(escaleraP(cuantosPalos(jugador.getArrayPalo())[1])) {
-				
+			if(escaleraP(cuantosPalos(jugador.getArrayPalo())[1])&&aux<=14) {
+				jugador.getArrayId()[i]=aux;
+				aux++;
 			}
+		}
+		if(aux==15) {
+			jugador.puntos+=100;
 		}
 	}
 	
