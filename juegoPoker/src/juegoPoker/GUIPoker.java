@@ -11,18 +11,21 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 public class GUIPoker extends JFrame {
+	
 	private ControlPoker controlPoker;
+	private JOptionPane pane;
 	private JButton verCartas, ir, pasar, subir, retiro;
 	private SpinnerNumberModel modelo;
 	private Escucha escucha;
 	private JSpinner cuadro;
 	private JPanel panelBotones;
-	private int alto;
+	private int alto,gano;
 
 	public GUIPoker() {
 		initGui();
@@ -83,6 +86,9 @@ public class GUIPoker extends JFrame {
 		panelBotones.add(retiro);
 		panelBotones.setBounds(0, 0, 200, 150);
 		controlPoker.jugador().add(panelBotones);
+		
+		
+		pane = new JOptionPane();
 	}
 
 	private class Escucha extends MouseAdapter implements ActionListener {
@@ -111,9 +117,30 @@ public class GUIPoker extends JFrame {
 					controlPoker.jugador().estado = 2;
 				}
 				// controlPoker.jugador().turno = false;
-
 				controlPoker.etapaJuego();
+				if(controlPoker.getEstado() == 4){
+				controlPoker.gano();
+				if(controlPoker.getGano() == true){
+					int gano = pane.showConfirmDialog(null,"Quieres seguir jugando","Termino la partida", pane.YES_NO_OPTION);
+					if(gano == pane.YES_OPTION){
+						
+					}
+					if(gano == pane.NO_OPTION){
+						System.exit(0);
+					}
+				}
+				
+				if(controlPoker.getGano() == false){
+					int gano = pane.showConfirmDialog(null,"Quieres seguir jugando","Termino la partida", pane.YES_NO_OPTION);
+					if(gano == pane.YES_OPTION){
+						
+					}
+					if(gano == pane.NO_OPTION){
+						System.exit(0);
+					}
+				}
 				repaint();
+			}
 			}
 		}
 
