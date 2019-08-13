@@ -13,7 +13,7 @@ public class ControlPoker extends JPanel {
 	private Jugador jugador;
 	private Dealer dealer;
 	private MazoDePoker mazo;
-	private int apuestas, estado, base,jugada;
+	private int apuestas, estado, base, jugada;
 	private PanelCartas panelCartas;
 	private JPanel panel;
 	private ArrayList<Cartas> comunitarias;
@@ -22,6 +22,7 @@ public class ControlPoker extends JPanel {
 	private int[] hay = new int[2];
 	private int[] grupos = new int[14];
 	private ArrayList<Jugador> jugadores;
+	private Pruebas pruebas = new Pruebas(); // borrar xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 	public ControlPoker() {
 		initgui();
@@ -34,7 +35,7 @@ public class ControlPoker extends JPanel {
 	public void initgui() {
 
 		base = 25;
-		jugada=0;
+		jugada = 0;
 		jugadores = new ArrayList<>();
 
 		comunitarias = new ArrayList<>();
@@ -61,6 +62,7 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void reparto() {
+
 		for (int i = 0; i < jugadores.size(); i++) {
 			Cartas aux = mazo.getMazo().get(0);
 			jugador.repartir(aux);
@@ -78,10 +80,16 @@ public class ControlPoker extends JPanel {
 			panel.add(aux);
 			mazo.getMazo().remove(aux);
 		}
+
+		/*
+		 * comunitarias = pruebas.comunitaria; jugador.setArraycartas(pruebas.prueba00);
+		 * dealer.setArraycartas(pruebas.prueba01);
+		 */
+
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
-		}
+	}
 
 	public void met() {
 		updateUI();
@@ -159,32 +167,36 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void comprobarJugada(Jugador jugador) {
-		jugada =sumaJugada(jugador.getArrayId());
+
+		jugada = sumaJugada(jugador.getArrayId());
 		cuantosPalos(jugador.getArrayPalo());
-		escaleraReal(jugador);
-		escaleraColor(jugador);
-		cuantosGrupos(cualGrupo(jugador),jugador);
-		color(jugador);
-		escalera(jugador);
+		// jugadas
+		escaleraReal(jugador, jugador.puntos);
+		escaleraColor(jugador, jugador.puntos);
+		cuantosGrupos(cualGrupo(jugador), jugador, jugador.puntos);
+		color(jugador, jugador.puntos);
+		escalera(jugador, jugador.puntos);
 		cartaMayor(jugador);
+		///
 		System.out.println(Arrays.toString(jugador.getArrayId()));
-		for (int i = 0; i < jugador.getArrayJugadas().size();i++) {
+		for (int i = 0; i < jugador.getArrayJugadas().size(); i++) {
 			System.out.println(jugador.getArrayJugadas().get(i));
 		}
-		 nPalos =new int[4];
-		 posiciones = new int[4][7];
-		 hay = new int[2];
-		 grupos = new int[14];
-		 jugada=0;
+		nPalos = new int[4];
+		posiciones = new int[4][7];
+		hay = new int[2];
+		grupos = new int[14];
+		jugada = 0;
 	}
-	
+
 	public void gano() {
 		comprobarJugada(jugador);
 		comprobarJugada(dealer);
-		System.out.println("jugador puntos "+jugador.puntos);
-		System.out.println("dealer puntos "+dealer.puntos);
-		System.out.println(jugador.puntos>dealer.puntos);
+		System.out.println("jugador puntos " + jugador.puntos);
+		System.out.println("dealer puntos " + dealer.puntos);
+		System.out.println(jugador.puntos > dealer.puntos);
 	}
+
 	public int[] cuantosPalos(String[] array) {
 
 		String[] palos = { "C", "D", "P", "T" };
@@ -238,151 +250,163 @@ public class ControlPoker extends JPanel {
 		return true;
 	}
 
-	public void escaleraReal(Jugador jugador) {
-
-		int comprobar = 10;
-		if (escaleraP(hay[1])) {
-			for (int i = 0; i < posiciones[hay[1]].length; i++) {
-				if (posiciones[hay[1]][i] != 0) {
-					if (jugador.getArrayId()[posiciones[hay[1]][i] - 1] == comprobar) {
-						comprobar++;
+	public void escaleraReal(Jugador jugador, int puntos) {
+		if (puntos == 0) {
+			int comprobar = 10;
+			if (escaleraP(hay[1])) {
+				for (int i = 0; i < posiciones[hay[1]].length; i++) {
+					if (posiciones[hay[1]][i] != 0) {
+						if (jugador.getArrayId()[posiciones[hay[1]][i] - 1] == comprobar) {
+							comprobar++;
+						}
 					}
 				}
+				if (comprobar == 15) {
+					jugador.puntos += 1000000000;
+					jugador.getArrayJugadas().add("Escalera Real");
+				}
+				comprobar = 10;
 			}
-			if (comprobar == 15) {
-				jugador.puntos += 1000000000;
-				jugador.getArrayJugadas().add("Escalera Real");
-			}
-			comprobar = 10;
 		}
 	}
 
-	public void escaleraColor(Jugador jugador) {
-
-		int[] aux = new int[7];
-		int x = 0;
-		int valores = 0;
-		int contador = 0;
-		if (escaleraP(hay[1])) {
-			for (int i = 0; i < posiciones[hay[1]].length; i++) {
-				if (posiciones[hay[1]][i] != 0) {
-					aux[i] = jugador.getArrayId()[posiciones[hay[1]][i] - 1];
-				}
-			}
-			Arrays.sort(aux);
-			for (int i = 0; i < aux.length; i++) {
-				if (aux[i] != 0) {
-					int aux1 = x;
-					x = aux[i];
-					valores += aux[i];
-					if (aux1 + 1 == x) {
-						contador++;
+	public void escaleraColor(Jugador jugador, int puntos) {
+		if (puntos == 0) {
+			int[] aux = new int[7];
+			int x = 0;
+			int valores = 0;
+			int contador = 0;
+			if (escaleraP(hay[1])) {
+				for (int i = 0; i < posiciones[hay[1]].length; i++) {
+					if (posiciones[hay[1]][i] != 0) {
+						aux[i] = jugador.getArrayId()[posiciones[hay[1]][i] - 1];
 					}
 				}
-			}
-			if (contador == 5) {
-				jugador.puntos += 100 * valores;
-				jugador.getArrayJugadas().add("Escalera Color");
+				Arrays.sort(aux);
+				for (int i = 0; i < aux.length; i++) {
+					if (aux[i] != 0) {
+						int aux1 = x;
+						x = aux[i];
+						valores += aux[i];
+						if (aux1 + 1 == x) {
+							contador++;
+						}
+					}
+				}
+				if (contador == 5) {
+					jugador.puntos += 100 * valores;
+					jugador.getArrayJugadas().add("Escalera Color");
+				}
 			}
 		}
 	}
 
 	public int[] cualGrupo(Jugador jugador) {
-
 		for (int i = 0; i < jugador.getArrayId().length; i++) {
 			for (int j = 0; j < jugador.getArrayId().length; j++) {
 				if (jugador.getArrayId()[i] == jugador.getArrayId()[j]) {
-					grupos[jugador.getArrayId()[i]-1] += 1;
+					grupos[jugador.getArrayId()[i] - 1] += 1;
 				}
 			}
 		}
 		return grupos;
 	}
-//modificar
-	public void cuantosGrupos(int[] cualGrupo,Jugador jugador) {
-		int[] pares = new int[4];
-		int[] trios = new int[3];
-		int poker = 0;
-		int x = 0;
-		int y = 0;
-		for (int i = 0; i < cualGrupo.length; i++) {
 
-			switch (cualGrupo[i]) {
-			case 4:
-				pares[x] = i;
-				x++;
-				break;
-			case 9:
-				trios[y] = i;
-				y++;
-				break;
-			case 16:
-				poker = i;
+	public void cuantosGrupos(int[] cualGrupo, Jugador jugador, int puntos) {
+		if (puntos == 0) {
+			int[] pares = new int[4];
+			int[] trios = new int[3];
+			int poker = 0;
+			int x = 0;
+			int y = 0;
+			for (int i = 0; i < cualGrupo.length; i++) {
+				switch (cualGrupo[i]) {
+				case 4:
+					pares[x] = i;
+					x++;
+					break;
+				case 9:
+					trios[y] = i;
+					y++;
+					break;
+				case 16:
+					poker = i;
+				}
 			}
-		}
-		for (int i = 0; i < pares.length - 1; i++) {
-			pares[pares.length - 1] += pares[i];
-		}
-		for (int i = 0; i < trios.length - 1; i++) {
-			trios[trios.length - 1] += trios[i];
-		}
-		if (poker != 0) {
-			jugador.getArrayJugadas().add("Poker");
-			jugador.puntos += poker * 11*jugada;
-		}
-		if (trios[0] != 0 && pares[0] != 0) {
-			jugador.getArrayJugadas().add("Full");
-			jugador.puntos += (trios[2] + pares[3]) * 8*jugada;
-		}
-		if (trios[0] != 0) {
+			for (int i = 0; i < pares.length - 1; i++) {
+				pares[pares.length - 1] += pares[i];
+			}
 			for (int i = 0; i < trios.length - 1; i++) {
-				if(trios[i]!=0) {
-					jugador.getArrayJugadas().add("trio");
+				trios[trios.length - 1] += trios[i];
+			}
+			if (poker != 0) {
+				jugador.getArrayJugadas().add("Poker");
+				jugador.puntos += poker * 11 * jugada;
+			}
+			if (trios[0] != 0 && pares[0] != 0 && puntos == 0) {// full
+				jugador.getArrayJugadas().add("Full");
+				jugador.puntos += (trios[2] + pares[3]) * 8 * jugada;
+				puntos += (trios[2] + pares[3]) * 8 * jugada;
+			} //
+			if (trios[0] != 0 && puntos == 0) {
+				for (int i = 0; i < trios.length - 1; i++) {
+					if (trios[i] != 0) {
+						jugador.getArrayJugadas().add("trio");
 					}
 				}
-			jugador.puntos += trios[2] *jugada* 4;
-		}
-		if (pares[0] != 0) {
-			for (int i = 0; i < pares.length - 1; i++) {
-				if(pares[i]!=0) {
-					jugador.getArrayJugadas().add("par");
+				jugador.puntos += trios[2] * jugada * 4;
+				puntos += trios[2] * 4 * jugada;
+			}
+			if (pares[0] != 0 && puntos == 0) {
+				for (int i = 0; i < pares.length - 1; i++) {
+					if (pares[i] != 0) {
+						jugador.getArrayJugadas().add("par");
 					}
+				}
+				jugador.puntos += pares[3] * jugada;
+				puntos += pares[3] * jugada;
 			}
-			jugador.puntos += pares[3]*jugada * 2;
 		}
 	}
 
-	public void color(Jugador jugador) {
-		if(escaleraP(hay[1])) {
-			jugador.puntos+=jugada*5;
+	public void color(Jugador jugador, int puntos) {
+		if (puntos == 0) {
+			if (escaleraP(hay[1])) {
+				jugador.puntos += jugada * 6;
+				jugador.getArrayJugadas().add("Color");
+			}
 		}
 	}
 
-	public void escalera(Jugador jugador ) {
-		Arrays.sort(jugador.getArrayId());
-		int contador=0;
-		int aux=jugador.getArrayId()[0];
-		for(int i=1;i<jugador.getArrayId().length;i++) {
-			if(aux+1==jugador.getArrayId()[i]){
-				contador++;
-				aux++;
+	public void escalera(Jugador jugador, int puntos) {
+		if (puntos == 0) {
+			Arrays.sort(jugador.getArrayId());
+			int contador = 0;
+			int aux = jugador.getArrayId()[0];
+			for (int i = 1; i < jugador.getArrayId().length; i++) {
+				if (aux + 1 == jugador.getArrayId()[i]) {
+					contador++;
+					aux++;
+				}
 			}
-		}
-		if(contador>=4) {
-			jugador.puntos+=jugada*5;
+			if (contador >= 4) {
+				jugador.puntos += jugada * 5;
+				jugador.getArrayJugadas().add("escalera");
+			}
 		}
 	}
 
 	public void cartaMayor(Jugador jugador) {
-		jugador.puntos+=sumaJugada(jugador.getArrayId());
+		jugador.puntos += sumaJugada(jugador.getArrayId());
+		jugador.getArrayJugadas().add("mayor");
 	}
-	
+
 	public int sumaJugada(int[] jugada) {
-		int aux=0;
-		for(int i =0;i<jugada.length;i++) {
-			aux+=jugada[i];
+		int aux = 0;
+		for (int i = 0; i < jugada.length; i++) {
+			aux += jugada[i];
 		}
 		return aux;
 	}
-	
+
 }

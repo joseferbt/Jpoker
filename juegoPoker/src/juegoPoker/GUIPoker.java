@@ -28,21 +28,21 @@ public class GUIPoker extends JFrame {
 		initGui();
 
 		// configuracion Default Windows
-		 setSize(1200,700);
-		this.setLocation(1500, 0);
+		setSize(1200, 700);
+		this.setLocation(0, 0);
 		setVisible(true);
 		setResizable(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public void initGui() {
-		alto=22;
+		alto = 22;
 		escucha = new Escucha();
-		
-		panelBotones=new JPanel();
+
+		panelBotones = new JPanel();
 		panelBotones.setLayout(null);
-		panelBotones.setBackground(new Color(0,0,0,0));
-		panelBotones.setPreferredSize(new Dimension(200,140));
+		panelBotones.setBackground(new Color(0, 0, 0, 0));
+		panelBotones.setPreferredSize(new Dimension(200, 140));
 		controlPoker = new ControlPoker();
 		add(controlPoker);
 
@@ -63,7 +63,8 @@ public class GUIPoker extends JFrame {
 		// subir.setVisible(false);
 		panelBotones.add(subir);
 
-		modelo = new SpinnerNumberModel(controlPoker.getBase(), controlPoker.getBase(), controlPoker.jugador().getDinero()-controlPoker.getBase(), controlPoker.getBase());
+		modelo = new SpinnerNumberModel(controlPoker.getBase(), controlPoker.getBase(),
+				controlPoker.jugador().getDinero() - controlPoker.getBase(), controlPoker.getBase());
 		cuadro = new JSpinner(modelo);
 		cuadro.setBounds(80, 104, 50, alto);
 		// cuadro.setVisible(false);
@@ -89,17 +90,17 @@ public class GUIPoker extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-		if (controlPoker.jugador().turno) {
+			if (controlPoker.jugador().turno) {
 
 				if (e.getSource() == ir) {
-					controlPoker.jugada(0,0);
-					modelo.setMaximum(controlPoker.jugador().getDinero()-controlPoker.getBase());
+					controlPoker.jugada(0, 0);
+					modelo.setMaximum(controlPoker.jugador().getDinero() - controlPoker.getBase());
 					repaint();
-					}
-				
+				}
+
 				if (e.getSource() == subir) {
 					controlPoker.jugada(1, Integer.valueOf(cuadro.getModel().getValue().toString()));
-					modelo.setMaximum(controlPoker.jugador().getDinero()-controlPoker.getBase());
+					modelo.setMaximum(controlPoker.jugador().getDinero() - controlPoker.getBase());
 					repaint();
 				}
 				if (e.getSource() == pasar) {
@@ -109,17 +110,19 @@ public class GUIPoker extends JFrame {
 				if (e.getSource() == retiro) {
 					controlPoker.jugador().estado = 2;
 				}
-				//controlPoker.jugador().turno = false;
-				}
-			controlPoker.etapaJuego();
+				// controlPoker.jugador().turno = false;
+
+				controlPoker.etapaJuego();
+				repaint();
+			}
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent evento) {
-			
+
 			controlPoker.jugador().getMano().get(0).setIcono();
 			controlPoker.jugador().getMano().get(1).setIcono();
-			
+
 		}
 
 		public void mouseExited(MouseEvent evento) {
