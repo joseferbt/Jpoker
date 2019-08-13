@@ -29,12 +29,12 @@ public class Jugador extends JPanel {
 	protected ArrayList<Cartas> mano;
 	private ArrayList<String> jugadas;
 
-	public Jugador(String nombre, boolean turno) {
+	public Jugador(String nombre, boolean turno, int dinero) {
 		arrayId = new int[7];
 		arrayPalo = new String[7];
 		arrayValor = new String[7];
 		jugadas = new ArrayList<>();
-		dinero = 1000;
+		this.dinero = dinero;
 		apuesta = 0;// borrar
 		this.turno = turno;
 		this.nombre = nombre;

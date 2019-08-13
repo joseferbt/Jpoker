@@ -51,7 +51,7 @@ public class ControlAux extends JPanel {
 
 		add(panelCartas, BorderLayout.CENTER);
 
-		jugador = new Jugador("jugador1", true);
+		jugador = new Jugador("jugador1", true,1000);
 		add(jugador, BorderLayout.SOUTH);
 
 		mazo = new MazoDePoker();

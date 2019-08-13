@@ -51,7 +51,7 @@ public class ControlPoker extends JPanel {
 
 		add(panelCartas, BorderLayout.CENTER);
 
-		jugador = new Jugador("jugador1", true);
+		jugador = new Jugador("jugador1", true,1000);
 		add(jugador, BorderLayout.SOUTH);
 
 		mazo = new MazoDePoker();
@@ -62,24 +62,25 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void reparto() {
-
+		int contador=0;
+		mazo.revolver();
 		for (int i = 0; i < jugadores.size(); i++) {
-			Cartas aux = mazo.getMazo().get(0);
+			Cartas aux = mazo.getMazo().get(contador);
+			contador++;
 			jugador.repartir(aux);
-			mazo.getMazo().remove(0);
-			aux = mazo.getMazo().get(0);
+			aux = mazo.getMazo().get(contador);
+			contador++;
 			dealer.repartir(aux);
-			mazo.getMazo().remove(0);
 		}
 		for (int i = 0; i < 5; i++) {
-			Cartas aux = mazo.getMazo().get(0);
+			Cartas aux = mazo.getMazo().get(contador);
+			contador++;
 			aux.setVisible(false);
 			jugador.getMano().add(aux);
 			dealer.getMano().add(aux);
 			comunitarias.add(aux);
 			panel.add(aux);
-			mazo.getMazo().remove(aux);
-		}
+			}
 
 		/*
 		 * comunitarias = pruebas.comunitaria; jugador.setArraycartas(pruebas.prueba00);
@@ -194,7 +195,16 @@ public class ControlPoker extends JPanel {
 		comprobarJugada(dealer);
 		System.out.println("jugador puntos " + jugador.puntos);
 		System.out.println("dealer puntos " + dealer.puntos);
-		System.out.println(jugador.puntos > dealer.puntos);
+		if(jugador.puntos > dealer.puntos) {
+			jugador.dinero = jugador.dinero+apuestas;
+			System.out.println("Dinero ganado "+ jugador.dinero);
+			
+		}
+		if(jugador.puntos < dealer.puntos) {
+			jugador.dinero = jugador.dinero;
+			System.out.println("Dinero perdido "+ jugador.dinero);
+			
+		}
 	}
 
 	public int[] cuantosPalos(String[] array) {
@@ -380,11 +390,19 @@ public class ControlPoker extends JPanel {
 
 	public void escalera(Jugador jugador, int puntos) {
 		if (puntos == 0) {
-			Arrays.sort(jugador.getArrayId());
+			int[] arid= jugador.getArrayId();
+			Arrays.sort(arid);
 			int contador = 0;
-			int aux = jugador.getArrayId()[0];
-			for (int i = 1; i < jugador.getArrayId().length; i++) {
-				if (aux + 1 == jugador.getArrayId()[i]) {
+			if(arid[0]==2&&arid[6]==14) {
+				for(int i=arid.length-1;i>0;i--) {
+					arid[i]=arid[i-1];
+				}
+				arid[0]=1;
+			}
+			System.out.println("here "+Arrays.toString(arid));
+			int aux = arid[0];
+			for (int i = 1; i < arid.length; i++) {
+				if (aux + 1 == arid[i]) {
 					contador++;
 					aux++;
 				}
