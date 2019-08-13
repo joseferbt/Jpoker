@@ -119,15 +119,17 @@ public class GUIPoker extends JFrame {
 
 		@Override
 		public void mouseEntered(MouseEvent evento) {
-
+			
 			controlPoker.jugador().getMano().get(0).setIcono();
 			controlPoker.jugador().getMano().get(1).setIcono();
 
 		}
 
 		public void mouseExited(MouseEvent evento) {
-			controlPoker.jugador().getMano().get(0).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
-			controlPoker.jugador().getMano().get(1).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
+			if (controlPoker.getEstado()<4) {
+				controlPoker.jugador().getMano().get(0).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
+				controlPoker.jugador().getMano().get(1).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
+			}
 		}
 
 	}

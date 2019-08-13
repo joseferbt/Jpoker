@@ -61,6 +61,10 @@ public class ControlPoker extends JPanel {
 		reparto();
 
 	}
+	
+	public int getEstado() {
+		return estado;
+	}
 
 	public void reparto() {
 		int contador = 0;
@@ -127,6 +131,9 @@ public class ControlPoker extends JPanel {
 
 		if (jugador.getEstado() == 1 || jugador.getEstado() == 0) {
 			panelCartas.actualizar(apuestas);
+			if(estado<=2){
+				jugador.setTurno(true);
+				}
 			estado++;
 			met();
 		} else if (jugador.estado == 4) {
@@ -144,13 +151,13 @@ public class ControlPoker extends JPanel {
 			comunitarias.get(3).setVisible(true);
 			comunitarias.get(3).setIcono();
 			break;
-
-		case 4:
 		case 3:
 			for (int i = 0; i < 5; i++) {
 				comunitarias.get(i).setIcono();
 				comunitarias.get(i).setVisible(true);
 			}
+			break;
+		case 4:
 			dealer.mano.get(0).setIcono();
 			dealer.mano.get(1).setIcono();
 			jugador.mano.get(0).setIcono();
@@ -197,12 +204,12 @@ public class ControlPoker extends JPanel {
 		}
 	}
 
-	public void jugadaGanadora(Jugador jugador,Jugador dealer) {
-		for (int i = 0; i < jugador.getArrayJugadas().size()&&i<dealer.getArrayJugadas().size(); i++) {
-			if (jugador.getArrayJugadas().get(i).equals(dealer.getArrayJugadas().get(i)) ){
+	public void jugadaGanadora(Jugador jugador, Jugador dealer) {
+		for (int i = 0; i < jugador.getArrayJugadas().size() && i < dealer.getArrayJugadas().size(); i++) {
+			if (jugador.getArrayJugadas().get(i).equals(dealer.getArrayJugadas().get(i))) {
 				texto = jugador.getNombre() + " Gano con Carta Mas Alta";
 			} else {
-				texto = jugador.getNombre()+" Gano con "+jugador.getArrayJugadas().get(0);
+				texto = jugador.getNombre() + " Gano con " + jugador.getArrayJugadas().get(0);
 			}
 		}
 	}
@@ -210,16 +217,16 @@ public class ControlPoker extends JPanel {
 	public void gano() {
 		comprobarJugada(jugador);
 		comprobarJugada(dealer);
-		
+
 		System.out.println("jugador puntos " + jugador.puntos);
 		System.out.println("dealer puntos " + dealer.puntos);
-		
+
 		if (jugador.puntos > dealer.puntos) {
-			jugadaGanadora(jugador,dealer);
+			jugadaGanadora(jugador, dealer);
 			jugador.dinero = jugador.dinero + apuestas;
 			System.out.println("Dinero ganado " + jugador.dinero);
-		}else {
-			jugadaGanadora(dealer,jugador);
+		} else {
+			jugadaGanadora(dealer, jugador);
 		}
 		System.out.println(texto);
 	}
@@ -349,15 +356,15 @@ public class ControlPoker extends JPanel {
 			for (int i = 0; i < cualGrupo.length; i++) {
 				switch (cualGrupo[i]) {
 				case 4:
-					pares[x] = i+1;
+					pares[x] = i + 1;
 					x++;
 					break;
 				case 9:
-					trios[y] = i+1;
+					trios[y] = i + 1;
 					y++;
 					break;
 				case 16:
-					poker = i+1;
+					poker = i + 1;
 				}
 			}
 			for (int i = 0; i < pares.length - 1; i++) {
@@ -378,7 +385,7 @@ public class ControlPoker extends JPanel {
 			if (trios[0] != 0 && puntos == 0) {
 				for (int i = 0; i < trios.length - 1; i++) {
 					if (trios[i] != 0) {
-						jugador.getArrayJugadas().add("Trio" );//+ trios[0]);
+						jugador.getArrayJugadas().add("Trio");// + trios[0]);
 					}
 				}
 				jugador.puntos += trios[2] * jugada * 4;
@@ -387,7 +394,7 @@ public class ControlPoker extends JPanel {
 			if (pares[0] != 0 && puntos == 0) {
 				for (int i = 0; i < pares.length - 1; i++) {
 					if (pares[i] != 0) {
-						jugador.getArrayJugadas().add("Par " );//+ pares[0]);
+						jugador.getArrayJugadas().add("Par ");// + pares[0]);
 					}
 				}
 				jugador.puntos += pares[3] * jugada;
