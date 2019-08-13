@@ -6,14 +6,16 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class ControlPoker extends JPanel {
-
+	private JPanel panelFinal;
 	private Jugador jugador;
 	private Dealer dealer;
 	private MazoDePoker mazo;
-	private int apuestas, estado, base,jugada;
+	private int apuestas, estado, base,jugada,analizarP,analizarT,analizarPok,analizarE,analizarEc,analizarFu,
+	analizarRoy,analizarCrMay,analizaresc,numeroMayor;
 	private PanelCartas panelCartas;
 	private JPanel panel;
 	private ArrayList<Cartas> comunitarias;
@@ -21,6 +23,7 @@ public class ControlPoker extends JPanel {
 	private int[][] posiciones = new int[4][7];
 	private int[] hay = new int[2];
 	private int[] grupos = new int[14];
+	private int[] numeroJugadas; 
 	private ArrayList<Jugador> jugadores;
 
 	public ControlPoker() {
@@ -28,7 +31,6 @@ public class ControlPoker extends JPanel {
 
 		this.setPreferredSize(new Dimension(1200, 670));
 		this.setBackground(new Color(50, 50, 50, 0));
-
 	}
 
 	public void initgui() {
@@ -56,6 +58,8 @@ public class ControlPoker extends JPanel {
 		mazo = new MazoDePoker();
 		jugadores.add(jugador);
 		jugadores.add(dealer);
+		
+	
 		reparto();
 
 	}
@@ -167,10 +171,31 @@ public class ControlPoker extends JPanel {
 		color(jugador);
 		escalera(jugador);
 		cartaMayor(jugador);
+		 numeroJugadas = new int[9];
+		 numeroJugadas[0] = analizarP;
+		 numeroJugadas[1] = analizarT;
+		 numeroJugadas[2] = analizarPok;
+		 numeroJugadas[3] = analizarE;
+		 numeroJugadas[4] = analizarEc;
+		 numeroJugadas[5] = analizarFu;
+		 numeroJugadas[6] = analizarRoy;
+		 numeroJugadas[7] = analizarCrMay;
+		 numeroJugadas[8] = analizaresc;
+			numeroMayor = numeroJugadas[0];
+
+
+			 /*{analizarP,analizarT,analizarPok,analizarE,analizarEc,analizarFu,
+					analizarRoy,analizarCrMay,analizaresc};*/
 		System.out.println(Arrays.toString(jugador.getArrayId()));
 		for (int i = 0; i < jugador.getArrayJugadas().size();i++) {
 			System.out.println(jugador.getArrayJugadas().get(i));
 		}
+		for(int i = 0; i<numeroJugadas.length;i++) {
+			if(numeroJugadas[i]>numeroMayor) {
+				numeroMayor = numeroJugadas[i];
+			}
+		}
+		System.out.println("La jugada mayor es "+numeroMayor);
 		 nPalos =new int[4];
 		 posiciones = new int[4][7];
 		 hay = new int[2];
@@ -183,7 +208,16 @@ public class ControlPoker extends JPanel {
 		comprobarJugada(dealer);
 		System.out.println("jugador puntos "+jugador.puntos);
 		System.out.println("dealer puntos "+dealer.puntos);
-		System.out.println(jugador.puntos>dealer.puntos);
+		if(jugador.puntos>dealer.puntos ) {
+			System.out.println("Gana jugador");
+			
+		}
+		 if(jugador.puntos<dealer.puntos) {
+			System.out.println("Gana dealer");
+		}
+		
+	
+	System.out.println(jugador.dinero);
 	}
 	public int[] cuantosPalos(String[] array) {
 
@@ -201,13 +235,10 @@ public class ControlPoker extends JPanel {
 			}
 		}
 		for (int i = 0; i < 4; i++) {
-			System.out.println(Arrays.toString(posiciones[i]));
+		//	System.out.println(Arrays.toString(posiciones[i]));
 		}
 
-		System.out.println("aqui" + Arrays.toString(array));
-		System.out.println("aqui" + Arrays.toString(nPalos));
-		System.out.println("aqui" + Arrays.toString(cuantosHay(nPalos)));
-		System.out.println("_____________________________________________");
+		
 		return cuantosHay(nPalos);
 	}
 
@@ -252,6 +283,7 @@ public class ControlPoker extends JPanel {
 			if (comprobar == 15) {
 				jugador.puntos += 1000000000;
 				jugador.getArrayJugadas().add("Escalera Real");
+				analizarRoy = 10;
 			}
 			comprobar = 10;
 		}
@@ -283,6 +315,7 @@ public class ControlPoker extends JPanel {
 			if (contador == 5) {
 				jugador.puntos += 100 * valores;
 				jugador.getArrayJugadas().add("Escalera Color");
+				analizarEc = 7;
 			}
 		}
 	}
@@ -329,15 +362,18 @@ public class ControlPoker extends JPanel {
 		if (poker != 0) {
 			jugador.getArrayJugadas().add("Poker");
 			jugador.puntos += poker * 11*jugada;
+			analizarPok = 6;
 		}
 		if (trios[0] != 0 && pares[0] != 0) {
 			jugador.getArrayJugadas().add("Full");
 			jugador.puntos += (trios[2] + pares[3]) * 8*jugada;
+			analizarFu = 5;
 		}
 		if (trios[0] != 0) {
 			for (int i = 0; i < trios.length - 1; i++) {
 				if(trios[i]!=0) {
 					jugador.getArrayJugadas().add("trio");
+					analizarT = 3;
 					}
 				}
 			jugador.puntos += trios[2] *jugada* 4;
@@ -346,15 +382,18 @@ public class ControlPoker extends JPanel {
 			for (int i = 0; i < pares.length - 1; i++) {
 				if(pares[i]!=0) {
 					jugador.getArrayJugadas().add("par");
+					analizarP = 2;
 					}
 			}
 			jugador.puntos += pares[3]*jugada * 2;
+			
 		}
 	}
 
 	public void color(Jugador jugador) {
 		if(escaleraP(hay[1])) {
 			jugador.puntos+=jugada*5;
+			analizaresc = 9;
 		}
 	}
 
@@ -370,11 +409,13 @@ public class ControlPoker extends JPanel {
 		}
 		if(contador>=4) {
 			jugador.puntos+=jugada*5;
+			analizarE = 5;
 		}
 	}
 
 	public void cartaMayor(Jugador jugador) {
 		jugador.puntos+=sumaJugada(jugador.getArrayId());
+		analizarCrMay = 1;
 	}
 	
 	public int sumaJugada(int[] jugada) {
