@@ -128,9 +128,8 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void etapaJuego() {
-
+		panelCartas.actualizar(apuestas);
 		if (jugador.getEstado() == 1 || jugador.getEstado() == 0) {
-			panelCartas.actualizar(apuestas);
 			if(estado<=2){
 				jugador.setTurno(true);
 				}
@@ -158,6 +157,10 @@ public class ControlPoker extends JPanel {
 			}
 			break;
 		case 4:
+			for (int i = 0; i < 5; i++) {
+				comunitarias.get(i).setIcono();
+				comunitarias.get(i).setVisible(true);
+			}
 			dealer.mano.get(0).setIcono();
 			dealer.mano.get(1).setIcono();
 			jugador.mano.get(0).setIcono();
