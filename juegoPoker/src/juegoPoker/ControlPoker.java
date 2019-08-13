@@ -23,6 +23,7 @@ public class ControlPoker extends JPanel {
 	private int[] grupos = new int[14];
 	private ArrayList<Jugador> jugadores;
 	private Pruebas pruebas = new Pruebas(); // borrar xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	private String texto;
 
 	public ControlPoker() {
 		initgui();
@@ -51,7 +52,7 @@ public class ControlPoker extends JPanel {
 
 		add(panelCartas, BorderLayout.CENTER);
 
-		jugador = new Jugador("jugador1", true,1000);
+		jugador = new Jugador("jugador1", true, 1000);
 		add(jugador, BorderLayout.SOUTH);
 
 		mazo = new MazoDePoker();
@@ -62,7 +63,7 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void reparto() {
-		int contador=0;
+		int contador = 0;
 		mazo.revolver();
 		for (int i = 0; i < jugadores.size(); i++) {
 			Cartas aux = mazo.getMazo().get(contador);
@@ -80,7 +81,7 @@ public class ControlPoker extends JPanel {
 			dealer.getMano().add(aux);
 			comunitarias.add(aux);
 			panel.add(aux);
-			}
+		}
 
 		/*
 		 * comunitarias = pruebas.comunitaria; jugador.setArraycartas(pruebas.prueba00);
@@ -190,21 +191,37 @@ public class ControlPoker extends JPanel {
 		jugada = 0;
 	}
 
+	public void iniciarJuego() {
+		if (jugador.getDinero() < base) {
+			reparto();
+		}
+	}
+
+	public void jugadaGanadora(Jugador jugador,Jugador dealer) {
+		for (int i = 0; i < jugador.getArrayJugadas().size()&&i<dealer.getArrayJugadas().size(); i++) {
+			if (jugador.getArrayJugadas().get(i).equals(dealer.getArrayJugadas().get(i)) ){
+				texto = jugador.getNombre() + " Gano con Carta Mas Alta";
+			} else {
+				texto = jugador.getNombre()+" Gano con "+jugador.getArrayJugadas().get(0);
+			}
+		}
+	}
+
 	public void gano() {
 		comprobarJugada(jugador);
 		comprobarJugada(dealer);
+		
 		System.out.println("jugador puntos " + jugador.puntos);
 		System.out.println("dealer puntos " + dealer.puntos);
-		if(jugador.puntos > dealer.puntos) {
-			jugador.dinero = jugador.dinero+apuestas;
-			System.out.println("Dinero ganado "+ jugador.dinero);
-			
+		
+		if (jugador.puntos > dealer.puntos) {
+			jugadaGanadora(jugador,dealer);
+			jugador.dinero = jugador.dinero + apuestas;
+			System.out.println("Dinero ganado " + jugador.dinero);
+		}else {
+			jugadaGanadora(dealer,jugador);
 		}
-		if(jugador.puntos < dealer.puntos) {
-			jugador.dinero = jugador.dinero;
-			System.out.println("Dinero perdido "+ jugador.dinero);
-			
-		}
+		System.out.println(texto);
 	}
 
 	public int[] cuantosPalos(String[] array) {
@@ -332,15 +349,15 @@ public class ControlPoker extends JPanel {
 			for (int i = 0; i < cualGrupo.length; i++) {
 				switch (cualGrupo[i]) {
 				case 4:
-					pares[x] = i;
+					pares[x] = i+1;
 					x++;
 					break;
 				case 9:
-					trios[y] = i;
+					trios[y] = i+1;
 					y++;
 					break;
 				case 16:
-					poker = i;
+					poker = i+1;
 				}
 			}
 			for (int i = 0; i < pares.length - 1; i++) {
@@ -350,18 +367,18 @@ public class ControlPoker extends JPanel {
 				trios[trios.length - 1] += trios[i];
 			}
 			if (poker != 0) {
-				jugador.getArrayJugadas().add("Poker");
+				jugador.getArrayJugadas().add("Poker  ");// + poker);
 				jugador.puntos += poker * 11 * jugada;
 			}
 			if (trios[0] != 0 && pares[0] != 0 && puntos == 0) {// full
-				jugador.getArrayJugadas().add("Full");
+				jugador.getArrayJugadas().add("Full ");// + trios[0] + pares[0]);
 				jugador.puntos += (trios[2] + pares[3]) * 8 * jugada;
 				puntos += (trios[2] + pares[3]) * 8 * jugada;
 			} //
 			if (trios[0] != 0 && puntos == 0) {
 				for (int i = 0; i < trios.length - 1; i++) {
 					if (trios[i] != 0) {
-						jugador.getArrayJugadas().add("trio");
+						jugador.getArrayJugadas().add("Trio" );//+ trios[0]);
 					}
 				}
 				jugador.puntos += trios[2] * jugada * 4;
@@ -370,7 +387,7 @@ public class ControlPoker extends JPanel {
 			if (pares[0] != 0 && puntos == 0) {
 				for (int i = 0; i < pares.length - 1; i++) {
 					if (pares[i] != 0) {
-						jugador.getArrayJugadas().add("par");
+						jugador.getArrayJugadas().add("Par " );//+ pares[0]);
 					}
 				}
 				jugador.puntos += pares[3] * jugada;
@@ -390,16 +407,16 @@ public class ControlPoker extends JPanel {
 
 	public void escalera(Jugador jugador, int puntos) {
 		if (puntos == 0) {
-			int[] arid= jugador.getArrayId();
+			int[] arid = jugador.getArrayId();
 			Arrays.sort(arid);
 			int contador = 0;
-			if(arid[0]==2&&arid[6]==14) {
-				for(int i=arid.length-1;i>0;i--) {
-					arid[i]=arid[i-1];
+			if (arid[0] == 2 && arid[6] == 14) {
+				for (int i = arid.length - 1; i > 0; i--) {
+					arid[i] = arid[i - 1];
 				}
-				arid[0]=1;
+				arid[0] = 1;
 			}
-			System.out.println("here "+Arrays.toString(arid));
+			System.out.println("here " + Arrays.toString(arid));
 			int aux = arid[0];
 			for (int i = 1; i < arid.length; i++) {
 				if (aux + 1 == arid[i]) {

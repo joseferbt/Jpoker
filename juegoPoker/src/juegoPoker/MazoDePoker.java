@@ -27,7 +27,7 @@ public class MazoDePoker {
 	}
 	
 	public void revolver() {
-		for(int i=0;i<120;i++) {
+		for(int i=0;i<150;i++) {
 			int valor =aleatorio.nextInt(baraja.size());
 			Cartas aux = baraja.get(valor);
 			baraja.remove(valor);

@@ -24,7 +24,7 @@ public class Jugador extends JPanel {
 	protected int dinero, apuesta, x, y, puntos, alto, estado;
 	public boolean turno;
 	protected String texto, nombre;
-	protected int[] arrayId;
+	protected int[] arrayId,jugada;
 	private String[] arrayPalo, arrayValor;
 	protected ArrayList<Cartas> mano;
 	private ArrayList<String> jugadas;
@@ -34,6 +34,7 @@ public class Jugador extends JPanel {
 		arrayPalo = new String[7];
 		arrayValor = new String[7];
 		jugadas = new ArrayList<>();
+		jugada=new int[10];
 		this.dinero = dinero;
 		apuesta = 0;// borrar
 		this.turno = turno;
@@ -59,6 +60,7 @@ public class Jugador extends JPanel {
 	}
 
 	public Jugador() {
+		jugada=new int[10];
 		arrayId = new int[7];
 		arrayPalo = new String[7];
 		arrayValor = new String[7];
@@ -132,6 +134,7 @@ public class Jugador extends JPanel {
 			}
 		}
 	}
+	
 
 	public int[] getArrayId() {
 		return arrayId;
@@ -151,5 +154,8 @@ public class Jugador extends JPanel {
 
 	public void setArraycartas(ArrayList<Cartas> cartas) {
 		mano = cartas;
+	}
+	public String getNombre() {
+		return nombre;
 	}
 }

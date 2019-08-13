@@ -13,6 +13,7 @@ public class Dealer extends Jugador  {
 	public Dealer() {
 		setBackground(new Color(0,0,0,0));
 		texto = "Dealer";
+		nombre = "Dealer";
 	}
 	
 
