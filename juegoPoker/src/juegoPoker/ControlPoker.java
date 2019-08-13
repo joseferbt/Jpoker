@@ -24,6 +24,7 @@ public class ControlPoker extends JPanel {
 	private ArrayList<Jugador> jugadores;
 	private Pruebas pruebas = new Pruebas(); // borrar xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	private String texto;
+	private boolean gano;
 
 	public ControlPoker() {
 		initgui();
@@ -64,6 +65,10 @@ public class ControlPoker extends JPanel {
 	
 	public int getEstado() {
 		return estado;
+	}
+
+	public boolean getGano() {
+		return gano;
 	}
 
 	public void reparto() {
@@ -226,9 +231,11 @@ public class ControlPoker extends JPanel {
 
 		if (jugador.puntos > dealer.puntos) {
 			jugadaGanadora(jugador, dealer);
+			gano=true;
 			jugador.dinero = jugador.dinero + apuestas;
 			System.out.println("Dinero ganado " + jugador.dinero);
 		} else {
+			gano=false;
 			jugadaGanadora(dealer, jugador);
 		}
 		System.out.println(texto);
