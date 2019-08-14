@@ -174,4 +174,7 @@ public class Jugador extends JPanel {
 	public String getNombre() {
 		return nombre;
 	}
+	public int[] getJugada() {
+		return jugada;
+	}
 }
