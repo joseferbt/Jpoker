@@ -15,11 +15,11 @@ public class Pruebas extends ArrayList{
 		prueba00 = new ArrayList<>();
 		prueba01 = new ArrayList<>();
 		
-		prueba00.add(new Cartas("3P"));
-		prueba00.add(new Cartas("2C"));
+		prueba00.add(new Cartas("5P"));
+		prueba00.add(new Cartas("9C"));
 
 		prueba01.add(new Cartas("9D"));
-		prueba01.add(new Cartas("14P"));
+		prueba01.add(new Cartas("4P"));
 		
 		for(int i=0;i<5;i++) {
 			prueba00.add(comunitaria.get(i));

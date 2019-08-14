@@ -260,9 +260,23 @@ public class ControlPoker extends JPanel {
 		for (int j = 0; j < jugador.getJugada().length; j++) {
 			if (jugadores.get(0).getJugada()[j] == 0 && 0 == jugadores.get(1).getJugada()[j]) {
 			} else if (jugadores.get(0).getJugada()[j] == jugadores.get(1).getJugada()[j]) {
-				if (j == 2 || j >= 6) {
+				if (j == 2 || j >= 6||j==3) {
+					if(j==3&&(jugadores.get(0).getJugada()[j] == jugadores.get(1).getJugada()[j])) {
+						if(jugadores.get(0).getJugada()[9] == jugadores.get(1).getJugada()[9]) {
+							gano = 2;
+							jugador.setDinero(jugador.getDinero() + (apuestas / 2));
+						}else if(jugadores.get(0).getJugada()[9] > jugadores.get(1).getJugada()[9]) {
+							jugadaGanadora(jugador, dealer);
+							gano = 1;
+							jugador.setDinero(jugador.getDinero() + apuestas);
+						}else if (jugador.getJugada()[9] < dealer.getJugada()[9]) {
+							jugadaGanadora(dealer, jugador);
+							gano = 0;
+						}
+					}else {
 					cartaMayor(jugador, 0, 0);
 					cartaMayor(dealer, 0, 0);
+					}
 				}
 				if (jugador.getJugada()[9] < dealer.getJugada()[9]) {
 					jugadaGanadora(dealer, jugador);
@@ -460,34 +474,34 @@ public class ControlPoker extends JPanel {
 			j = sumaJugada(jugador.getJugada());
 		}
 		if (trios[0] != 0 && pares[0] != 0 && j == 0) { //////////////// full
-			jugador.getArrayJugadas().add("Full de " + trios[0] + " y " + pares[0]);
+			jugador.getArrayJugadas().add("Full de " + cualCarta(trios[0]) + " y " + cualCarta(pares[0]));
 			jugador.setPuntos(jugador.getPuntos() + (trios[2] + pares[3]) * 70);
-			jugador.getJugada()[3] = trios[0];
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			jugador.getJugada()[3] = trios[0]; 
+			cartaMayor(jugador, 0, pares[0]);
+			
 		} //
 		color(jugador, j);
 		escalera(jugador, j);
 		j = sumaJugada(jugador.getJugada());
 		if (trios[0] != 0 && j == 0) { ///// trio
-			for (int i = 0; i < trios.length - 1; i++) {
-				if (trios[i] != 0) {
-					jugador.getArrayJugadas().add("Trio de " + trios[i]);
-				}
-			}
+			jugador.getArrayJugadas().add("Trio de " + cualCarta(trios[0]));
 			jugador.setPuntos(jugador.getPuntos() + trios[2] * 40);
 			jugador.getJugada()[6] = trios[2];
 			j = sumaJugada(jugador.getJugada());
 		}
 		if (pares[0] != 0 && j == 0 && pares[1] != 0) { //// parejas Dobles
-			jugador.getArrayJugadas().add("Pardoble de " + (pares[0] + pares[1]));
+			jugador.getArrayJugadas().add("Pardoble de " + cualCarta(pares[0]) +" y "+ cualCarta(pares[1]));
 			jugador.setPuntos(jugador.getPuntos() + pares[3] * 30);
 			jugador.getJugada()[7] += pares[3];
 			j = sumaJugada(jugador.getJugada());
 		}
 		// System.out.print("///////as "+pares[0]);
 		if (pares[0] != 0 && j == 0) { ///// pareja sola
-			jugador.getArrayJugadas().add("Par de " + pares[0]);
+			jugador.getArrayJugadas().add("Par de " + cualCarta(pares[0]));
 			jugador.setPuntos(jugador.getPuntos() + pares[0] * 20);
-			jugador.getJugada()[8] += pares[0];
+			jugador.getJugada()[8] += pares[0]; 
+			
 		}
 
 	}
@@ -497,7 +511,7 @@ public class ControlPoker extends JPanel {
 			if (escaleraP(hay[1])) {
 				Arrays.sort(mismoPalo);
 				jugador.setPuntos(jugador.getPuntos() + mismoPalo[6] * 60);
-				jugador.getArrayJugadas().add("Color " + mismoPalo[6]);
+				jugador.getArrayJugadas().add("Color " + cualCarta(mismoPalo[6]));
 				jugador.getJugada()[4] = mismoPalo[6];
 			}
 		}
@@ -550,6 +564,7 @@ public class ControlPoker extends JPanel {
 
 	public void cartaMayor(Jugador jugador, int jugada, int index) {
 		if (jugada == 0) {
+			System.out.println("[aqui estoy] ");
 			if (index == 0) {
 				if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
 					jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
@@ -570,13 +585,14 @@ public class ControlPoker extends JPanel {
 					jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
 					jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
 					jugador.getJugada()[9] = jugador.getMisId()[1];
-				}
-				if (index > 1) {
+				}}
+				if (index != 1&&index!=0) {
+					System.out.println("[aqui estoy]             XXXXXXXXXXXXXXXXXXXXXX");
 					jugador.getArrayJugadas().add("Full con par  " + cualCarta(index));
 					jugador.getJugada()[9] = index;
 				}
 
-			}
+			
 		}
 
 	}
