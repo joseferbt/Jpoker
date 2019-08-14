@@ -74,20 +74,20 @@ public class ControlPoker extends JPanel {
 
 	public void reparto() {
 
-		/*
-		 * int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
-		 * { Cartas aux = mazo.getMazo().get(contador); contador++;
-		 * jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
-		 * dealer.repartir(aux); } for (int i = 0; i < 5; i++) { Cartas aux =
-		 * mazo.getMazo().get(contador); contador++; aux.setVisible(false);
-		 * jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
-		 * panel.add(aux); }
-		 */
-
+		
+		  int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
+		  { Cartas aux = mazo.getMazo().get(contador); contador++;
+		  jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
+		  dealer.repartir(aux); } for (int i = 0; i < 5; i++) { Cartas aux =
+		  mazo.getMazo().get(contador); contador++; aux.setVisible(false);
+		  jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
+		  panel.add(aux); }
+		 
+/*
 		dealer.setArraycartas(pruebas.prueba01);
 		jugador.setArraycartas(pruebas.prueba00);
 		comunitarias = pruebas.comunitaria;
-
+*/
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
@@ -236,7 +236,7 @@ public class ControlPoker extends JPanel {
 				texto = jugador.getNombre() + " Gano con " + jugador.getArrayJugadas().get(i);
 				break;
 			} else {
-				texto = jugador.getNombre() + " Gano con Carta Mas Alta";
+				texto = jugador.getNombre() + " Gano con "+"*";
 			}
 		}
 	}
