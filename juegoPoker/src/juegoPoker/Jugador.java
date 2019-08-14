@@ -20,22 +20,23 @@ import javax.swing.SpinnerNumberModel;
 
 public class Jugador extends JPanel {
 
-	protected JPanel panelCartas, panelBotones;
-	protected int dinero, apuesta, x, y, puntos, alto, estado;
+	private JPanel panelCartas, panelBotones;
+	private int dinero, apuesta, x, y, puntos, alto, estado;
 	public boolean turno;
 	protected String texto, nombre;
-	protected int[] arrayId,jugada;
+	private int[] arrayId,jugada,misId;
 	private String[] arrayPalo, arrayValor;
-	protected ArrayList<Cartas> mano;
+	private ArrayList<Cartas> mano;
 	private ArrayList<String> jugadas;
 
 	public Jugador(String nombre, boolean turno, int dinero) {
+		misId=new int[2];
 		arrayId = new int[7];
 		arrayPalo = new String[7];
 		arrayValor = new String[7];
 		jugadas = new ArrayList<>();
 		jugada=new int[10];
-		this.dinero = dinero;
+		this.setDinero(dinero);
 		apuesta = 0;// borrar
 		this.turno = turno;
 		this.nombre = nombre;
@@ -60,6 +61,7 @@ public class Jugador extends JPanel {
 	}
 
 	public Jugador() {
+		misId=new int[2];
 		jugada=new int[10];
 		arrayId = new int[7];
 		arrayPalo = new String[7];
@@ -93,8 +95,8 @@ public class Jugador extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.black);
 		g.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
-		if (dinero > 0) {
-			g.drawString(texto + Integer.toString(dinero), 10, 20);
+		if (getDinero() > 0) {
+			g.drawString(texto + Integer.toString(getDinero()), 10, 20);
 		} else {
 			g.drawString(texto, 10, 20);
 		}
@@ -113,13 +115,14 @@ public class Jugador extends JPanel {
 	}
 
 	public void setApuesta(int valor) {
-		dinero -= valor;
+		setDinero(getDinero() - valor);
 		repaint();
 		turno=false;
 	}
 	
 	public void remover(int index) {
 		mano.remove(0);
+		
 		if(index==0) {
 			panelCartas.remove(0);
 			panelCartas.remove(0);
@@ -127,7 +130,12 @@ public class Jugador extends JPanel {
 			y = 10;
 			this.updateUI();
 			panelCartas.updateUI();
+			for(int i =jugadas.size()-1;i>=0;i--)
+			jugadas.remove(i);
 			}
+		setPuntos(0);
+		jugada = new int[10];
+
 	
 	}
 
@@ -139,6 +147,8 @@ public class Jugador extends JPanel {
 		for (int i = 0; i < mano.size(); i++) {
 			arrayValor[i] = mano.get(i).getValor();
 		}
+		misId[0]= mano.get(0).getId();
+		misId[1]=mano.get(1).getId();
 		Arrays.sort(arrayValor);
 		for (int i = 0; i < 7; i++) {
 			if (arrayValor[i].length() > 2) {
@@ -163,6 +173,9 @@ public class Jugador extends JPanel {
 	public String[] getArrayValor() {
 		return arrayValor;
 	}
+	public int[] getMisId() {
+		return misId;
+	}
 
 	public ArrayList<String> getArrayJugadas() {
 		return jugadas;
@@ -176,5 +189,30 @@ public class Jugador extends JPanel {
 	}
 	public int[] getJugada() {
 		return jugada;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	/**
+	 * @return the puntos
+	 */
+	public int getPuntos() {
+		return puntos;
+	}
+
+	/**
+	 * @param puntos the puntos to set
+	 */
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
+	}
+
+	/**
+	 * @param dinero the dinero to set
+	 */
+	public void setDinero(int dinero) {
+		this.dinero = dinero;
 	}
 }

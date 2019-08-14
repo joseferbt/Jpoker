@@ -110,18 +110,18 @@ public class GUIPoker extends JFrame {
 					repaint();
 				}
 				if (e.getSource() == pasar) {
-					controlPoker.jugador().estado = 1;
+					controlPoker.jugador().setEstado(1);
 					repaint();
 				}
 				if (e.getSource() == retiro) {
-					controlPoker.jugador().estado = 2;
+					controlPoker.jugador().setEstado(2);
 				}
 				// controlPoker.jugador().turno = false;
 				controlPoker.etapaJuego();
 				if(controlPoker.getEstado() == 4){
 			
 				if(controlPoker.getGano() ){
-					int gano = pane.showConfirmDialog(null,controlPoker.getTexto()+"Ganaste!!!!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
+					int gano = pane.showConfirmDialog(null,controlPoker.getTexto()+" Ganaste!!!!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
 					if(gano == pane.YES_OPTION){
 						controlPoker.iniciarJuego();
 					}
@@ -131,7 +131,7 @@ public class GUIPoker extends JFrame {
 				}
 				
 				if(!controlPoker.getGano()){
-					int gano = pane.showConfirmDialog(null,controlPoker.getTexto()+"Perdiste!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
+					int gano = pane.showConfirmDialog(null,controlPoker.getTexto()+" Perdiste!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
 					if(gano == pane.YES_OPTION){
 						controlPoker.iniciarJuego();
 					}
