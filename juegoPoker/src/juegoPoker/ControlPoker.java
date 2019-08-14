@@ -74,7 +74,7 @@ public class ControlPoker extends JPanel {
 
 	public void reparto() {
 
-		
+		/*
 		  int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
 		  { Cartas aux = mazo.getMazo().get(contador); contador++;
 		  jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
@@ -83,11 +83,11 @@ public class ControlPoker extends JPanel {
 		  jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
 		  panel.add(aux); }
 		 
-/*
+*/
 		dealer.setArraycartas(pruebas.prueba01);
 		jugador.setArraycartas(pruebas.prueba00);
 		comunitarias = pruebas.comunitaria;
-*/
+
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
@@ -184,7 +184,7 @@ public class ControlPoker extends JPanel {
 		cuantosGrupos(cualGrupo(jugador), jugador, sumaJugada(jugador.getJugada()));
 		System.out.println("suma " + sumaJugada(jugador.getJugada()));
 
-		cartaMayor(jugador, sumaJugada(jugador.getJugada()));
+		cartaMayor(jugador, sumaJugada(jugador.getJugada()),0);
 		///
 		System.out.println(Arrays.toString(jugador.getArrayId()));
 		for (int i = 0; i < jugador.getArrayJugadas().size(); i++) {
@@ -236,7 +236,7 @@ public class ControlPoker extends JPanel {
 				texto = jugador.getNombre() + " Gano con " + jugador.getArrayJugadas().get(i);
 				break;
 			} else {
-				texto = jugador.getNombre() + " Gano con "+"*";
+				texto = jugador.getNombre() + " Gano con "+jugador.getArrayJugadas().get(jugador.getArrayJugadas().size()-1);
 			}
 		}
 	}
@@ -254,8 +254,8 @@ public class ControlPoker extends JPanel {
 			if(jugadores.get(0).getJugada()[j]==0&&0==jugadores.get(1).getJugada()[j]) {
 			}else if(jugadores.get(0).getJugada()[j]==jugadores.get(1).getJugada()[j]) {
 				if(j==2||j>=6) {
-					cartaMayor(jugador,0);
-					cartaMayor(dealer,0);
+					cartaMayor(jugador,0,0);
+					cartaMayor(dealer,0,0);
 				}
 				if(jugador.getJugada()[9] <dealer.getJugada()[9]) {
 					jugadaGanadora( dealer, jugador ) ;
@@ -264,9 +264,23 @@ public class ControlPoker extends JPanel {
 					jugadaGanadora( jugador,  dealer) ;
 					gano=1;
 					jugador.setDinero(jugador.getDinero()+apuestas);
-				}else {
+				}else if(jugador.getJugada()[9]==dealer.getJugada()[9]&&(j==6||j==8||j==9)) {
+					cartaMayor(jugador,0,1);
+					cartaMayor(dealer,0,1);
+					if(jugador.getJugada()[9] <dealer.getJugada()[9]) {
+						jugadaGanadora( dealer, jugador ) ;
+						gano=0;
+						}else if(jugador.getJugada()[9]>dealer.getJugada()[9]) {
+							jugadaGanadora( jugador,  dealer) ;
+							gano=1;
+							jugador.setDinero(jugador.getDinero()+apuestas);
+						}else {
+							gano=2;
+							jugador.setDinero(jugador.getDinero()+(apuestas/2));}
+					break;}
+				else {
 					gano=2;
-					jugador.setDinero(jugador.getDinero()+apuestas/2);}
+					jugador.setDinero(jugador.getDinero()+(apuestas/2));}
 				System.out.println("[X]");
 				break;
 			}else if(jugadores.get(0).getJugada()[j]>jugadores.get(1).getJugada()[j]) {
@@ -512,9 +526,10 @@ public class ControlPoker extends JPanel {
 		}
 	}
 
-	public void cartaMayor(Jugador jugador, int jugada) {
+	public void cartaMayor(Jugador jugador, int jugada,int index) {
 		if (jugada == 0) {
-			if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
+			if(index==0) {
+				if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
 				jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
 				jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
 				jugador.getJugada()[9] = jugador.getMisId()[1];
@@ -522,9 +537,20 @@ public class ControlPoker extends JPanel {
 				jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
 				jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[0]);
 				jugador.getJugada()[9] = jugador.getMisId()[0];
-
+			}}if(index ==1) {
+				if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
+				jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
+				jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[0]);
+				jugador.getJugada()[9] = jugador.getMisId()[0];
+			} else {
+				jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
+				jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
+				jugador.getJugada()[9] = jugador.getMisId()[1];
 			}
-		}
+				
+			}
+			}
+		
 	}
 
 	public int sumaJugada(int[] jugada) {
