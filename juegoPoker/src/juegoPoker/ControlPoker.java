@@ -35,7 +35,7 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void initgui() {
-
+		estado=0;
 		base = 25;
 		jugada = 0;
 		jugadores = new ArrayList<>();
@@ -74,7 +74,7 @@ public class ControlPoker extends JPanel {
 
 	public void reparto() {
 
-		/*
+		
 		  int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
 		  { Cartas aux = mazo.getMazo().get(contador); contador++;
 		  jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
@@ -83,11 +83,11 @@ public class ControlPoker extends JPanel {
 		  jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
 		  panel.add(aux); }
 		 
-*/
+/*
 		dealer.setArraycartas(pruebas.prueba01);
 		jugador.setArraycartas(pruebas.prueba00);
 		comunitarias = pruebas.comunitaria;
-
+*/
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
@@ -129,7 +129,8 @@ public class ControlPoker extends JPanel {
 			if (estado <= 2) {
 				jugador.setTurno(true);
 			}
-			estado++;
+			if(jugador.getEstado()!=2) {
+			estado++;}
 			met();
 		} else if (jugador.getEstado() == 4) {
 			estado = 4;
@@ -202,6 +203,7 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void iniciarJuego() {
+		estado=0;
 		if (jugador.getDinero() >= base) {
 
 			for (int i = 0; i < jugadores.size(); i++) {

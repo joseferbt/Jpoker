@@ -14,8 +14,8 @@ public class PanelCartas extends JPanel {
 	public PanelCartas() {
 
 		setBackground(new Color(0,0,0,0));
-		setPreferredSize(new Dimension(1200,350));
-		texto="Valor Apuestas : "; 
+		setPreferredSize(new Dimension(700,350));
+		texto="Apuestas : "; 
 	}
 	
 	public void actualizar(int apuesta) {
@@ -28,6 +28,6 @@ public class PanelCartas extends JPanel {
 		super.paintComponent(g);
 		g.setColor(Color.black);
 		g.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
-		g.drawString(texto+apuesta, 220, 15);
+		g.drawString(texto+apuesta, 5, 15);
 	}
 }

@@ -122,7 +122,7 @@ public class Jugador extends JPanel {
 	
 	public void remover(int index) {
 		mano.remove(0);
-		
+		estado=0;
 		if(index==0) {
 			panelCartas.remove(0);
 			panelCartas.remove(0);

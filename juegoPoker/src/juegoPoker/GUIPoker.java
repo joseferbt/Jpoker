@@ -17,7 +17,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 public class GUIPoker extends JFrame {
-	
+
 	private ControlPoker controlPoker;
 	private JOptionPane pane;
 	private JButton verCartas, ir, pasar, subir, retiro;
@@ -25,7 +25,8 @@ public class GUIPoker extends JFrame {
 	private Escucha escucha;
 	private JSpinner cuadro;
 	private JPanel panelBotones;
-	private int alto,gano;
+	private int alto, gano;
+	private JFrame yo= this;
 
 	public GUIPoker() {
 		initGui();
@@ -34,7 +35,7 @@ public class GUIPoker extends JFrame {
 		setSize(700, 700);
 		this.setLocation(1400, 0);
 		setVisible(true);
-		setResizable(true);
+		setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -86,8 +87,7 @@ public class GUIPoker extends JFrame {
 		panelBotones.add(retiro);
 		panelBotones.setBounds(0, 0, 200, 150);
 		controlPoker.jugador().add(panelBotones);
-		
-		
+
 		pane = new JOptionPane();
 	}
 
@@ -109,62 +109,91 @@ public class GUIPoker extends JFrame {
 					modelo.setMaximum(controlPoker.jugador().getDinero() - controlPoker.getBase());
 					repaint();
 				}
-				if (e.getSource() == pasar) {
+				if (e.getSource() == pasar&&controlPoker.getEstado()<3) {
 					controlPoker.jugador().setEstado(1);
 					repaint();
 				}
+				
 				if (e.getSource() == retiro) {
+					
 					controlPoker.jugador().setEstado(2);
+					gano = pane.showConfirmDialog(null, " Estas seguro que te quieres Retirar perderas tu apuesta",
+							"retiro", pane.YES_NO_OPTION);
+					pane.updateUI();
+					panelBotones.updateUI();
+					controlPoker.met();
+					if (gano == pane.YES_OPTION) {
+						gano = pane.showConfirmDialog(null, " ¿quieres seguir jugando?", "Termino la partida",
+								pane.YES_NO_OPTION);
+						if (gano == pane.YES_OPTION) {
+							controlPoker.iniciarJuego();
+
+						}
+						if (gano == pane.NO_OPTION) {
+							System.exit(0);
+						}
+						
+					}
+					if (gano == pane.NO_OPTION) {
+						yo.setEnabled(true);
+						controlPoker.jugador().setTurno(true);
+					}
+					repaint();
 				}
 				// controlPoker.jugador().turno = false;
 				controlPoker.etapaJuego();
-				if(controlPoker.getEstado() == 4){
-			switch(controlPoker.getGano()) {
-			case 0:
-				gano = pane.showConfirmDialog(null,controlPoker.getTexto()+" Perdiste!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
-				if(gano == pane.YES_OPTION){
-					controlPoker.iniciarJuego();
-				}
-				if(gano == pane.NO_OPTION){
-					System.exit(0);
-				}
-				break;
-			case 1:
-				 gano = pane.showConfirmDialog(null,controlPoker.getTexto()+" Ganaste!!!!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
-				if(gano == pane.YES_OPTION){
-					controlPoker.iniciarJuego();
-				}
-				if(gano == pane.NO_OPTION){
-					System.exit(0);
-				}
-			break;
-			case 2:
-				 gano = pane.showConfirmDialog(null," empate!!!!! ¿Quieres seguir jugando?","Termino la partida", pane.YES_NO_OPTION);
-				if(gano == pane.YES_OPTION){
-					controlPoker.iniciarJuego();
-				}
-				if(gano == pane.NO_OPTION){
-					System.exit(0);
-				}
-			break;
-				
-			}
+				if (controlPoker.getEstado() == 4) {
+					switch (controlPoker.getGano()) {
+					case 0:
+						gano = pane.showConfirmDialog(null,
+								controlPoker.getTexto() + " Perdiste!! ¿Quieres seguir jugando?", "Termino la partida",
+								pane.YES_NO_OPTION);
+						if (gano == pane.YES_OPTION) {
+							controlPoker.iniciarJuego();
+						}
+						if (gano == pane.NO_OPTION) {
+							System.exit(0);
+						}
+						break;
+					case 1:
+						gano = pane.showConfirmDialog(null,
+								controlPoker.getTexto() + " Ganaste!!!!! ¿Quieres seguir jugando?",
+								"Termino la partida", pane.YES_NO_OPTION);
+						if (gano == pane.YES_OPTION) {
+							controlPoker.iniciarJuego();
+						}
+						if (gano == pane.NO_OPTION) {
+							System.exit(0);
+						}
+						break;
+					case 2:
+						gano = pane.showConfirmDialog(null, " empate!!!!! ¿Quieres seguir jugando?",
+								"Termino la partida", pane.YES_NO_OPTION);
+						if (gano == pane.YES_OPTION) {
+							controlPoker.iniciarJuego();
+						}
+						if (gano == pane.NO_OPTION) {
+							System.exit(0);
+						}
+						break;
 
-				repaint();
-			}
+					}
+
+					repaint();
+				}
 			}
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent evento) {
-			
+
 			controlPoker.jugador().getMano().get(0).setIcono();
 			controlPoker.jugador().getMano().get(1).setIcono();
 
 		}
 
 		public void mouseExited(MouseEvent evento) {
-			if (controlPoker.getEstado()<4) {
+			if (controlPoker.getEstado() < 4) {
 				controlPoker.jugador().getMano().get(0).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
 				controlPoker.jugador().getMano().get(1).setIcon(controlPoker.jugador().getMano().get(1).defoutl);
 			}
