@@ -74,20 +74,19 @@ public class ControlPoker extends JPanel {
 
 	public void reparto() {
 
+		
+		  int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
+		  { Cartas aux = mazo.getMazo().get(contador); contador++;
+		  jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
+		  dealer.repartir(aux); } for (int i = 0; i < 5; i++) { Cartas aux =
+		  mazo.getMazo().get(contador); contador++; aux.setVisible(false);
+		  jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
+		  panel.add(aux); }
+		 
 		/*
-		 * int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
-		 * { Cartas aux = mazo.getMazo().get(contador); contador++;
-		 * jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
-		 * dealer.repartir(aux); } for (int i = 0; i < 5; i++) { Cartas aux =
-		 * mazo.getMazo().get(contador); contador++; aux.setVisible(false);
-		 * jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
-		 * panel.add(aux); }
+		 * dealer.setArraycartas(pruebas.prueba01);
+		 * jugador.setArraycartas(pruebas.prueba00); comunitarias = pruebas.comunitaria;
 		 */
-
-		dealer.setArraycartas(pruebas.prueba01);
-		jugador.setArraycartas(pruebas.prueba00);
-		comunitarias = pruebas.comunitaria;
-
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
@@ -568,22 +567,22 @@ public class ControlPoker extends JPanel {
 			if (index == 0) {
 				if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
 					jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
-					jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
+					jugador.getArrayJugadas().add("mayor " + cualCarta(jugador.getMisId()[1]));
 					jugador.getJugada()[9] = jugador.getMisId()[1];
 				} else {
 					jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
-					jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[0]);
+					jugador.getArrayJugadas().add("mayor " + cualCarta(jugador.getMisId()[0]));
 					jugador.getJugada()[9] = jugador.getMisId()[0];
 				}
 			}
 			if (index == 1) {
 				if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
 					jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
-					jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[0]);
+					jugador.getArrayJugadas().add("mayor " + cualCarta(jugador.getMisId()[0]));
 					jugador.getJugada()[9] = jugador.getMisId()[0];
 				} else {
 					jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
-					jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
+					jugador.getArrayJugadas().add("mayor " + cualCarta(jugador.getMisId()[1]));
 					jugador.getJugada()[9] = jugador.getMisId()[1];
 				}}
 				if (index != 1&&index!=0) {

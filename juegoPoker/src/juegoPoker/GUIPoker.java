@@ -33,7 +33,8 @@ public class GUIPoker extends JFrame {
 
 		// configuracion Default Windows
 		setSize(700, 700);
-		this.setLocation(1400, 0);
+		this.setLocationRelativeTo(null);
+		//this.setLocation(1400, 0);
 		setVisible(true);
 		setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -151,7 +152,19 @@ public class GUIPoker extends JFrame {
 								controlPoker.getTexto() + " Perdiste!! ¿Quieres seguir jugando?", "Termino la partida",
 								pane.YES_NO_OPTION);
 						if (gano == pane.YES_OPTION) {
-							controlPoker.iniciarJuego();
+							if(controlPoker.jugador().getDinero()>0) {
+							controlPoker.iniciarJuego();}
+							gano = pane.showConfirmDialog(null,
+									 " NO tienes Dinero Quieres volver a jugar", "Termino la partida",
+									pane.YES_NO_OPTION);
+							if (gano == pane.YES_OPTION) {
+								yo.remove(controlPoker);
+								controlPoker = new ControlPoker();
+								yo.add(controlPoker);
+							}
+							if (gano == pane.NO_OPTION) {
+								System.exit(0);
+							}
 						}
 						if (gano == pane.NO_OPTION) {
 							System.exit(0);
