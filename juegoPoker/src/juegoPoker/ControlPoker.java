@@ -13,10 +13,11 @@ public class ControlPoker extends JPanel {
 	private Jugador jugador;
 	private Dealer dealer;
 	private MazoDePoker mazo;
-	private int apuestas, estado, base, jugada;
+	private int apuestas, estado, base, jugada,gano;
 	private PanelCartas panelCartas;
 	private JPanel panel;
 	private ArrayList<Cartas> comunitarias;
+	private int[] mismoPalo = new int[7];
 	private int[] nPalos = new int[4];
 	private int[][] posiciones = new int[4][7];
 	private int[] hay = new int[2];
@@ -24,7 +25,6 @@ public class ControlPoker extends JPanel {
 	private ArrayList<Jugador> jugadores;
 	private Pruebas pruebas = new Pruebas(); // borrar xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	private String texto;
-	private boolean gano;
 
 	public ControlPoker() {
 		initgui();
@@ -67,36 +67,27 @@ public class ControlPoker extends JPanel {
 		return estado;
 	}
 
-	public boolean getGano() {
+	public int getGano() {
+		
 		return gano;
 	}
 
 	public void reparto() {
 
-		int contador = 0;
-		mazo.revolver();
-		for (int i = 0; i < jugadores.size(); i++) {
-			Cartas aux = mazo.getMazo().get(contador);
-			contador++;
-			jugador.repartir(aux);
-			aux = mazo.getMazo().get(contador);
-			contador++;
-			dealer.repartir(aux);
-		}
-		for (int i = 0; i < 5; i++) {
-			Cartas aux = mazo.getMazo().get(contador);
-			contador++;
-			aux.setVisible(false);
-			jugador.getMano().add(aux);
-			dealer.getMano().add(aux);
-			comunitarias.add(aux);
-			panel.add(aux);
-		}
-
 		/*
-		 * dealer.setArraycartas(pruebas.prueba01);
-		 * jugador.setArraycartas(pruebas.prueba00); comunitarias = pruebas.comunitaria;
+		 * int contador = 0; mazo.revolver(); for (int i = 0; i < jugadores.size(); i++)
+		 * { Cartas aux = mazo.getMazo().get(contador); contador++;
+		 * jugador.repartir(aux); aux = mazo.getMazo().get(contador); contador++;
+		 * dealer.repartir(aux); } for (int i = 0; i < 5; i++) { Cartas aux =
+		 * mazo.getMazo().get(contador); contador++; aux.setVisible(false);
+		 * jugador.getMano().add(aux); dealer.getMano().add(aux); comunitarias.add(aux);
+		 * panel.add(aux); }
 		 */
+
+		dealer.setArraycartas(pruebas.prueba01);
+		jugador.setArraycartas(pruebas.prueba00);
+		comunitarias = pruebas.comunitaria;
+
 		jugador.setArray();
 		dealer.setArray();
 		estado = 0;
@@ -191,7 +182,9 @@ public class ControlPoker extends JPanel {
 		escaleraReal(jugador);
 		escaleraColor(jugador, sumaJugada(jugador.getJugada()));
 		cuantosGrupos(cualGrupo(jugador), jugador, sumaJugada(jugador.getJugada()));
-		cartaMayor(jugador);
+		System.out.println("suma " + sumaJugada(jugador.getJugada()));
+
+		cartaMayor(jugador, sumaJugada(jugador.getJugada()));
 		///
 		System.out.println(Arrays.toString(jugador.getArrayId()));
 		for (int i = 0; i < jugador.getArrayJugadas().size(); i++) {
@@ -199,7 +192,9 @@ public class ControlPoker extends JPanel {
 		}
 		System.out.println(Arrays.toString(jugador.getJugada()));
 		System.out.println(Arrays.toString(jugador.getMisId()));
+		System.out.println("mismo Palo " + Arrays.toString(mismoPalo));
 		nPalos = new int[4];
+		mismoPalo = new int[7];
 		posiciones = new int[4][7];
 		hay = new int[2];
 		grupos = new int[14];
@@ -247,21 +242,43 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void gano() {
-		comprobarJugada(jugador);
-		comprobarJugada(dealer);
 
 		System.out.println("jugador puntos " + jugador.getPuntos());
 		System.out.println("dealer puntos " + dealer.getPuntos());
-
-		if (jugador.getPuntos() > dealer.getPuntos()) {
-			jugadaGanadora(jugador, dealer);
-			gano = true;
-			jugador.setDinero(jugador.getDinero() + apuestas);
-			System.out.println("Dinero ganado " + jugador.getDinero());
-		} else {
-			gano = false;
-			jugadaGanadora(dealer, jugador);
+		for (int i = 0; i < jugadores.size(); i++) {
+			comprobarJugada(jugadores.get(i));
 		}
+		int aux=0;
+		int aux1=0;
+		for (int j = 0; j < jugador.getJugada().length; j++) {
+			if(jugadores.get(0).getJugada()[j]==0&&0==jugadores.get(1).getJugada()[j]) {
+			}else if(jugadores.get(0).getJugada()[j]==jugadores.get(1).getJugada()[j]) {
+				if(j==2||j>=6) {
+					cartaMayor(jugador,0);
+					cartaMayor(dealer,0);
+				}
+				if(jugador.getJugada()[9] <dealer.getJugada()[9]) {
+					jugadaGanadora( dealer, jugador ) ;
+					gano=0;
+				}else if(jugador.getJugada()[9]>dealer.getJugada()[9]) {
+					jugadaGanadora( jugador,  dealer) ;
+					gano=1;
+				}else {gano=2; }
+				System.out.println("[X]");
+				break;
+			}else if(jugadores.get(0).getJugada()[j]>jugadores.get(1).getJugada()[j]) {
+				gano=1;
+				jugadaGanadora( jugador,  dealer) ;
+				System.out.println("[y]");
+				break;
+			}else {
+				gano=0;
+				jugadaGanadora( dealer, jugador ) ;
+				System.out.println("[z]");
+				break;}
+			System.out.println("[A]");
+		}
+
 		System.out.println(texto);
 	}
 
@@ -281,12 +298,12 @@ public class ControlPoker extends JPanel {
 			}
 		}
 		for (int i = 0; i < 4; i++) {
-			// System.out.println(Arrays.toString(posiciones[i]));
+			System.out.println(Arrays.toString(posiciones[i]));
 		}
 
-		// System.out.println("aqui" + Arrays.toString(array));
-		// System.out.println("aqui" + Arrays.toString(nPalos));
-		// System.out.println("aqui" + Arrays.toString(cuantosHay(nPalos)));
+		System.out.println("aqui" + Arrays.toString(array));
+		System.out.println("aqui" + Arrays.toString(nPalos));
+		System.out.println("aqui" + Arrays.toString(cuantosHay(nPalos)));
 		System.out.println("_____________________________________________");
 		return cuantosHay(nPalos);
 	}
@@ -308,8 +325,10 @@ public class ControlPoker extends JPanel {
 
 	public boolean escaleraP(int posicion) {
 		int aux = 0;
-		for (int i = 0; i < posiciones[posicion].length; i++) {
+
+		for (int i = 0; i < posiciones[posicion].length - 1; i++) {
 			if (posiciones[posicion][i] != 0) {
+				mismoPalo[i] = jugador.getArrayId()[posiciones[posicion][i] - 1];
 				aux++;
 			} else if (posiciones[posicion][i] == 0 && aux < 5) {
 				return false;
@@ -329,11 +348,11 @@ public class ControlPoker extends JPanel {
 				}
 			}
 			if (comprobar == 15) {
-				jugador.setPuntos(jugador.getPuntos() + 1000000000);
-				jugador.getArrayJugadas().add("Escalera Real");
+				jugador.setPuntos(jugador.getPuntos() + 999999999);
+				jugador.getArrayJugadas().add("Escalera Real ");
+				jugador.getJugada()[0] = 999999999;
 			}
 			comprobar = 10;
-			jugador.getJugada()[0] = 10;
 		}
 	}
 
@@ -362,8 +381,8 @@ public class ControlPoker extends JPanel {
 				}
 				if (contador == 5) {
 					jugador.setPuntos(jugador.getPuntos() + 100 * valores);
-					jugador.getArrayJugadas().add("Escalera Color");
-					jugador.getJugada()[1] = 9;
+					jugador.getArrayJugadas().add("Escalera Color de " + aux[contador]);
+					jugador.getJugada()[1] = aux[contador];
 				}
 			}
 		}
@@ -408,13 +427,13 @@ public class ControlPoker extends JPanel {
 		}
 		if (poker != 0 && j == 0) {
 			jugador.getArrayJugadas().add("Poker de " + poker);
-			jugador.setPuntos(jugador.getPuntos() + poker * 11 * jugada);
+			jugador.setPuntos(jugador.getPuntos() + poker * 80);
 			jugador.getJugada()[2] = 8;
 			j = sumaJugada(jugador.getJugada());
 		}
-		if (trios[0] != 0 && pares[0] != 0 && j == 0) { // full
+		if (trios[0] != 0 && pares[0] != 0 && j == 0) { //////////////// full
 			jugador.getArrayJugadas().add("Full de " + trios[0] + " y " + pares[0]);
-			jugador.setPuntos(jugador.getPuntos() + (trios[2] + pares[3]) * 8 * jugada);
+			jugador.setPuntos(jugador.getPuntos() + (trios[2] + pares[3]) * 70);
 			jugador.getJugada()[3] = (trios[2] + pares[3]);
 		} //
 		color(jugador, sumaJugada(jugador.getJugada()));
@@ -426,20 +445,20 @@ public class ControlPoker extends JPanel {
 					jugador.getArrayJugadas().add("Trio de " + trios[i]);
 				}
 			}
-			jugador.setPuntos(jugador.getPuntos() + trios[2] * jugada * 4);
+			jugador.setPuntos(jugador.getPuntos() + trios[2] * 40);
 			jugador.getJugada()[6] = trios[2];
 			j = sumaJugada(jugador.getJugada());
 		}
-		if (pares[0] != 0 && j == 0&& pares[1] != 0) { //// parejas Dobles
-			jugador.getArrayJugadas().add("Par de " + pares[0] + " y " + pares[1]);
-			jugador.setPuntos(jugador.getPuntos() + pares[3] * 4);
+		if (pares[0] != 0 && j == 0 && pares[1] != 0) { //// parejas Dobles
+			jugador.getArrayJugadas().add("Pardoble de " + (pares[0] + pares[1]));
+			jugador.setPuntos(jugador.getPuntos() + pares[3] * 30);
 			jugador.getJugada()[7] += pares[3];
 			j = sumaJugada(jugador.getJugada());
 		}
-	//	System.out.print("///////as "+pares[0]);
+		// System.out.print("///////as "+pares[0]);
 		if (pares[0] != 0 && j == 0) { ///// pareja sola
 			jugador.getArrayJugadas().add("Par de " + pares[0]);
-			jugador.setPuntos(jugador.getPuntos() + pares[0] * 4);
+			jugador.setPuntos(jugador.getPuntos() + pares[0] * 20);
 			jugador.getJugada()[8] += pares[0];
 		}
 
@@ -448,9 +467,10 @@ public class ControlPoker extends JPanel {
 	public void color(Jugador jugador, int puntos) {
 		if (puntos == 0) {
 			if (escaleraP(hay[1])) {
-				jugador.setPuntos(jugador.getPuntos() + jugada * 6);
-				jugador.getArrayJugadas().add("Color");
-				jugador.getJugada()[4] = 6;
+				Arrays.sort(mismoPalo);
+				jugador.setPuntos(jugador.getPuntos() + mismoPalo[6] * 60);
+				jugador.getArrayJugadas().add("Color " + mismoPalo[6]);
+				jugador.getJugada()[4] = mismoPalo[6];
 			}
 		}
 	}
@@ -471,31 +491,35 @@ public class ControlPoker extends JPanel {
 				if (aux + 1 == arid[i]) {
 					contador++;
 					aux++;
+				} else if (aux == arid[i]) {
+					aux = arid[i];
 				} else {
 					aux = arid[i];
 					contador = 0;
 				}
 			}
 			if (contador >= 4) {
-				jugador.setPuntos(jugador.getPuntos() + jugada * 5);
-				jugador.getArrayJugadas().add("escalera");
-				jugador.getJugada()[5] = 5;
+				jugador.setPuntos(jugador.getPuntos() + arid[contador] * 50);
+				jugador.getArrayJugadas().add("escalera al " + arid[contador]);
+				jugador.getJugada()[5] = arid[contador];
 			} else if (jugador.getArrayId()[0] == 1) {
 				jugador.getArrayId()[0] = 14;
 			}
 		}
 	}
 
-	public void cartaMayor(Jugador jugador) {
-		if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
-			jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
-			jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
-		//	jugador.getJugada()[9] = jugador.getMisId()[1];
-		} else {
-			jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
-			jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[0]);
-			//jugador.getJugada()[9] = jugador.getMisId()[0];
+	public void cartaMayor(Jugador jugador, int jugada) {
+		if (jugada == 0) {
+			if (jugador.getMisId()[0] < jugador.getMisId()[1]) {
+				jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[1]);
+				jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[1]);
+				jugador.getJugada()[9] = jugador.getMisId()[1];
+			} else {
+				jugador.setPuntos(jugador.getPuntos() + jugador.getMisId()[0]);
+				jugador.getArrayJugadas().add("mayor " + jugador.getMisId()[0]);
+				jugador.getJugada()[9] = jugador.getMisId()[0];
 
+			}
 		}
 	}
 

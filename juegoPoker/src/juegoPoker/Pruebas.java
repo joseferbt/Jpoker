@@ -8,18 +8,18 @@ public class Pruebas extends ArrayList{
 	{
 		comunitaria = new ArrayList<>();
 		comunitaria.add(new Cartas("10T"));
-		comunitaria.add(new Cartas("9D"));
-		comunitaria.add(new Cartas("11P"));
-		comunitaria.add(new Cartas("4C"));
-		comunitaria.add(new Cartas("8P"));
+		comunitaria.add(new Cartas("14T"));
+		comunitaria.add(new Cartas("11T"));
+		comunitaria.add(new Cartas("13T"));
+		comunitaria.add(new Cartas("7C"));
 		prueba00 = new ArrayList<>();
 		prueba01 = new ArrayList<>();
 		
-		prueba01.add(new Cartas("14D"));
-		prueba01.add(new Cartas("14T"));
+		prueba01.add(new Cartas("13D"));
+		prueba01.add(new Cartas("8C"));
 
-		prueba00.add(new Cartas("7D"));
-		prueba00.add(new Cartas("3D"));
+		prueba00.add(new Cartas("5C"));
+		prueba00.add(new Cartas("12P"));
 		
 		for(int i=0;i<5;i++) {
 			prueba00.add(comunitaria.get(i));
