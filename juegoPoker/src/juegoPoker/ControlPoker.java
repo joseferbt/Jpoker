@@ -263,11 +263,15 @@ public class ControlPoker extends JPanel {
 				}else if(jugador.getJugada()[9]>dealer.getJugada()[9]) {
 					jugadaGanadora( jugador,  dealer) ;
 					gano=1;
-				}else {gano=2; }
+					jugador.setDinero(jugador.getDinero()+apuestas);
+				}else {
+					gano=2;
+					jugador.setDinero(jugador.getDinero()+apuestas/2);}
 				System.out.println("[X]");
 				break;
 			}else if(jugadores.get(0).getJugada()[j]>jugadores.get(1).getJugada()[j]) {
 				gano=1;
+				jugador.setDinero(jugador.getDinero()+apuestas);
 				jugadaGanadora( jugador,  dealer) ;
 				System.out.println("[y]");
 				break;
