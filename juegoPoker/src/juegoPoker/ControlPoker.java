@@ -92,10 +92,6 @@ public class ControlPoker extends JPanel {
 			panel.add(aux);
 		}
 
-		/*
-		 * comunitarias = pruebas.comunitaria; jugador.setArraycartas(pruebas.prueba00);
-		 * dealer.setArraycartas(pruebas.prueba01);
-		 */
 
 		jugador.setArray();
 		dealer.setArray();
@@ -227,6 +223,7 @@ public class ControlPoker extends JPanel {
 			reparto();
 			apuestas=0;
 			panelCartas.actualizar(apuestas);
+			jugador.turno = true;
 			
 		}
 	}
