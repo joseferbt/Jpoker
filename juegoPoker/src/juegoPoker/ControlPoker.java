@@ -207,8 +207,27 @@ public class ControlPoker extends JPanel {
 	}
 
 	public void iniciarJuego() {
-		if (jugador.getDinero() < base) {
+		if (jugador.getDinero() >= base) {
+			
+			for(int i =0; i<jugadores.size();i++) {
+				
+				for(int j =jugadores.get(i).getMano().size()-1;j>=0;j--) {
+					
+					jugadores.get(i).remover(j);
+					
+					if(j<5&&i==0) {
+					comunitarias.remove(0);
+					panel.remove(0);
+					}
+				}
+			}
+			System.out.print("[comunitarias] "+comunitarias.size());
+			System.out.print("[jugador] "+jugadores.get(0).getMano().size());
+			System.out.print("[dealer] "+jugadores.get(1).getMano().size());
 			reparto();
+			apuestas=0;
+			panelCartas.actualizar(apuestas);
+			
 		}
 	}
 

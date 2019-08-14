@@ -80,10 +80,12 @@ public class Jugador extends JPanel {
 
 	public void repartir(Cartas carta) {
 		this.mano.add(carta);
+		carta.setIcon(carta.defoutl);
 		carta.setBounds(0, y, 85, 130);
 		panelCartas.add(carta);
 		panelCartas.updateUI();
 		x += 90;
+		
 
 	}
 
@@ -114,6 +116,19 @@ public class Jugador extends JPanel {
 		dinero -= valor;
 		repaint();
 		turno=false;
+	}
+	
+	public void remover(int index) {
+		mano.remove(0);
+		if(index==0) {
+			panelCartas.remove(0);
+			panelCartas.remove(0);
+			x = 200;
+			y = 10;
+			this.updateUI();
+			panelCartas.updateUI();
+			}
+	
 	}
 
 	public void setTurno(boolean valor) {
