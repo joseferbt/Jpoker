@@ -100,16 +100,18 @@ public class GUIPoker extends JFrame {
 
 				if (e.getSource() == ir) {
 					controlPoker.jugada(0, 0);
+					controlPoker.jugador().setEstado(0);
 					modelo.setMaximum(controlPoker.jugador().getDinero() - controlPoker.getBase());
 					repaint();
 				}
 
 				if (e.getSource() == subir) {
+					controlPoker.jugador().setEstado(0);
 					controlPoker.jugada(1, Integer.valueOf(cuadro.getModel().getValue().toString()));
 					modelo.setMaximum(controlPoker.jugador().getDinero() - controlPoker.getBase());
 					repaint();
 				}
-				if (e.getSource() == pasar&&controlPoker.getEstado()<3) {
+				if (e.getSource() == pasar) {
 					controlPoker.jugador().setEstado(1);
 					repaint();
 				}
