@@ -22,8 +22,8 @@ public class ClientePoker extends JFrame implements Runnable{
 	private String host;
 	private JPanel panelBotones;
 	private int puerto;
-	private DataOutputStream salida;
-	private DataInputStream entrada;
+	private ObjectOutputStream salida;
+	private ObjectInputStream entrada;
 	
 	public ClientePoker(String host,int PUERTO) {
 		host = host;
@@ -31,7 +31,7 @@ public class ClientePoker extends JFrame implements Runnable{
 		setSize(1200,700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		setTitle("Texas Hold´em");
+		setTitle("Texas HoldÂ´em");
 		puerto = PUERTO;
 	}
 	
@@ -56,8 +56,8 @@ public class ClientePoker extends JFrame implements Runnable{
 		try {
 			sc = server.accept();
 			optionPane.showMessageDialog(optionPane, "Has iniciado el juego");
-			salida = new DataOutputStream(sc.getOutputStream());
-			entrada = new DataInputStream(sc.getInputStream());
+			salida = new ObjectOutputStream(sc.getOutputStream());
+			entrada = new ObjectInputStream(sc.getInputStream());
 			iniciarWhile();
 			
 		} catch (IOException e) {
