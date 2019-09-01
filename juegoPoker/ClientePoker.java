@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,8 +25,8 @@ public class ClientePoker extends JFrame implements Runnable{
 	private String host;
 	private JPanel panelBotones;
 	private int puerto;
-	private DataOutputStream salida;
-	private DataInputStream entrada;
+	private ObjectOutputStream salida;
+	private ObjectInputStream entrada;
 	
 	public ClientePoker(String host,int PUERTO) {
 		host = host;
@@ -54,8 +56,8 @@ public class ClientePoker extends JFrame implements Runnable{
 		try {
 			sc = server.accept();
 			optionPane.showMessageDialog(optionPane, "Has iniciado el juego");
-			salida = new DataOutputStream(sc.getOutputStream());
-			entrada = new DataInputStream(sc.getInputStream());
+			salida = new ObjectOutputStream(sc.getOutputStream());
+			entrada = new ObjectInputStream(sc.getInputStream());
 			iniciarWhile();
 			
 		} catch (IOException e) {
