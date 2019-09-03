@@ -1,9 +1,7 @@
 package juegoPoker;
 
 import java.awt.BorderLayout;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -56,12 +54,13 @@ public class ClientePoker extends JFrame implements Runnable{
 		try {
 			sc = server.accept();
 			optionPane.showMessageDialog(optionPane, "Has iniciado el juego");
-			salida = new ObjectOutputStream(sc.getOutputStream());
+			salida = new
+					ObjectOutputStream(sc.getOutputStream());
 			entrada = new ObjectInputStream(sc.getInputStream());
 			iniciarWhile();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		
